@@ -1,0 +1,72 @@
+@startuml
+skinparam linetype ortho
+
+entity "User" {
+    *user_id : <<uuid>>
+    *phone_number : text <<UNIQUE>> <<FK>>
+    --
+    ' *email : text
+    ' *password : text
+    *created_at : datetime
+    *updated_at : datetime
+    deleted_at : datetime
+}
+
+entity "PhoneName" {
+    *phone_number : text <<UNIQUE>>
+    --
+    *name : text
+    *created_at : datetime
+    *updated_at : datetime
+    deleted_at : datetime
+}
+
+entity "SurfaceType" {
+    *surface_type_id : <<uuid>>
+    --
+    *name : text
+    *price_per_minute : number
+    *created_at : datetime
+    *updated_at : datetime
+    deleted_at : datetime
+}
+
+entity "Court" {
+    *court_id : <<uuid>>
+    --
+    *surface_type_id : number <<FK>>
+    *name : text
+    description : text
+    *created_at : datetime
+    *updated_at : datetime
+    deleted_at : datetime
+}
+
+' This is actually not implemented as an enum in the database but rather
+'   a string field in the Reservation table. I would have liked to use an
+'   enum but liquibase has the Check constraint behind a paywall.
+enum "GameType" {
+    SINGLES
+    DOUBLES /' multiplies the price by 1.5 '/
+}
+
+entity "Reservation" {
+    *resevation_id : <<uuid>>
+    --
+    *court_id : number <<FK>>
+    *user_id : number <<FK>>
+    *start_time : datetime
+    *end_time : datetime
+    *game_type : GameType
+    *created_at : datetime
+    *updated_at : datetime
+    deleted_at : datetime
+}
+
+GameType ||--|| Reservation
+User ||--o{ Reservation
+PhoneName ||--|| User
+SurfaceType ||--|| Court
+Court ||--o{ Reservation
+
+@enduml
