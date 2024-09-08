@@ -1,6 +1,9 @@
 package cz.inqool.tennis_club;
 
-import java.time.Instant;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +19,28 @@ public class SurfaceTypeRepositoryTest {
     private SurfaceTypeRepository surfaceTypeRepository;
 
     @Test
-    void trestSaveSurfaceType() {
-        SurfaceType surfaceType = new SurfaceType();
-        surfaceType.setName("Clay");
-        surfaceType.setPricePerMinute(100);
-        surfaceType.setCreatedAt(Instant.now());
-        surfaceType.setUpdatedAt(Instant.now());
+    void testSave() {
+        SurfaceType surfaceType = new SurfaceType("Clay", new BigDecimal(100));
 
         surfaceTypeRepository.save(surfaceType);
 
-        System.out.println("Saved surface type: " + surfaceType.getId());
+        SurfaceType savedSurfaceType = surfaceTypeRepository.findById(surfaceType.getId());
+        assertNotNull(savedSurfaceType);
+        assertEquals(surfaceType.getName(), savedSurfaceType.getName());
+        assertEquals(surfaceType.getPricePerMinute(), savedSurfaceType.getPricePerMinute());
+    }
+
+    @Test
+    void testDeleteById() {
+        SurfaceType surfaceType = new SurfaceType("Synthetic", new BigDecimal(200));
+
+        surfaceTypeRepository.save(surfaceType);
+
+        surfaceTypeRepository.deleteById(surfaceType.getId());
+
+        SurfaceType deletedSurfaceType = surfaceTypeRepository.findById(surfaceType.getId());
+        assertNotNull(deletedSurfaceType);
+        assertNotNull(deletedSurfaceType.getDeletedAt());
     }
 
 }
