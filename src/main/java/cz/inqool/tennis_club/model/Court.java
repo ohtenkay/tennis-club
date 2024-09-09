@@ -1,6 +1,5 @@
 package cz.inqool.tennis_club.model;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -8,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,19 +19,23 @@ import lombok.RequiredArgsConstructor;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class SurfaceType {
+public class Court {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @ManyToOne
+    @JoinColumn(name = "surfaceTypeId", nullable = false, unique = true)
+    @NotNull
+    @NonNull
+    private SurfaceType surfaceType;
+
     @NotNull
     @NonNull
     private String name;
 
-    @NotNull
-    @NonNull
-    private BigDecimal pricePerMinute;
+    private String description;
 
     @NotNull
     private Instant createdAt = Instant.now();
