@@ -2,7 +2,7 @@
 skinparam linetype ortho
 
 entity "User" {
-    *user_id : <<uuid>>
+    *id : <<uuid>>
     *phone_number : text <<UNIQUE>> <<FK>>
     --
     ' *email : text
@@ -22,7 +22,7 @@ entity "PhoneName" {
 }
 
 entity "SurfaceType" {
-    *surface_type_id : <<uuid>>
+    *id : <<uuid>>
     --
     *name : text
     *price_per_minute : number
@@ -32,9 +32,9 @@ entity "SurfaceType" {
 }
 
 entity "Court" {
-    *court_id : <<uuid>>
+    *id : <<uuid>>
     --
-    *surface_type_id : number <<FK>>
+    *surface_type_id : <<uuid>> <<FK>>
     *name : text
     description : text
     *created_at : datetime
@@ -51,10 +51,10 @@ enum "GameType" {
 }
 
 entity "Reservation" {
-    *resevation_id : <<uuid>>
+    *id : <<uuid>>
     --
-    *court_id : number <<FK>>
-    *user_id : number <<FK>>
+    *court_id : <<uuid>> <<FK>>
+    *user_id : <<uuid>>  <<FK>>
     *start_time : datetime
     *end_time : datetime
     *game_type : GameType
