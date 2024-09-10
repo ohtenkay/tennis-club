@@ -2,13 +2,17 @@ package cz.inqool.tennis_club.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import cz.inqool.tennis_club.exception.SurfaceTypeNotFoundException;
 import lombok.val;
 
 @SpringBootTest
@@ -22,8 +26,7 @@ public class SurfaceTypeRepositoryTest {
         val name = "Clay";
         val pricePerMinute = new BigDecimal(100);
 
-        val id = surfaceTypeRepository.create(name, pricePerMinute);
-        val savedSurfaceType = surfaceTypeRepository.findById(id);
+        val savedSurfaceType = surfaceTypeRepository.create(name, pricePerMinute);
 
         assertNotNull(savedSurfaceType);
         assertEquals(name, savedSurfaceType.getName());
@@ -32,12 +35,13 @@ public class SurfaceTypeRepositoryTest {
 
     @Test
     void testDeleteById() {
-        val id = surfaceTypeRepository.create("Synthetic", new BigDecimal(200));
-        surfaceTypeRepository.deleteById(id);
-        val deletedSurfaceType = surfaceTypeRepository.findById(id);
+        val savedSurfaceType = surfaceTypeRepository.create("Synthetic", new BigDecimal(200));
+        surfaceTypeRepository.deleteById(savedSurfaceType.getId());
+        val deletedSurfaceType = surfaceTypeRepository.findById(savedSurfaceType.getId());
 
-        assertNotNull(deletedSurfaceType);
-        assertNotNull(deletedSurfaceType.getDeletedAt());
+        assertTrue(deletedSurfaceType.isPresent());
+        assertNotNull(deletedSurfaceType.get().getDeletedAt());
+        assertThrows(SurfaceTypeNotFoundException.class, () -> surfaceTypeRepository.deleteById(UUID.randomUUID()));
     }
 
 }

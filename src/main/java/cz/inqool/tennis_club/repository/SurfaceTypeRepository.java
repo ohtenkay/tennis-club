@@ -2,10 +2,12 @@ package cz.inqool.tennis_club.repository;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
+import cz.inqool.tennis_club.exception.SurfaceTypeNotFoundException;
 import cz.inqool.tennis_club.model.SurfaceType;
 
 import jakarta.persistence.EntityManager;
@@ -21,21 +23,21 @@ public class SurfaceTypeRepository {
     private EntityManager entityManager;
 
     @Transactional
-    public UUID create(String name, BigDecimal pricePerMinute) {
+    public SurfaceType create(String name, BigDecimal pricePerMinute) {
         val surfaceType = new SurfaceType(name, pricePerMinute);
 
         entityManager.persist(surfaceType);
 
-        return surfaceType.getId();
+        return surfaceType;
     }
 
-    public SurfaceType findById(UUID id) {
-        return entityManager.find(SurfaceType.class, id);
+    public Optional<SurfaceType> findById(UUID id) {
+        return Optional.ofNullable(entityManager.find(SurfaceType.class, id));
     }
 
     @Transactional
     public void deleteById(UUID id) {
-        val surfaceType = findById(id);
+        val surfaceType = findById(id).orElseThrow(() -> new SurfaceTypeNotFoundException(id));
 
         surfaceType.setUpdatedAt(Instant.now());
         surfaceType.setDeletedAt(Instant.now());
