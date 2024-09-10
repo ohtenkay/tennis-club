@@ -20,7 +20,6 @@ import lombok.Setter;
 @Entity
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class Reservation {
 
     @Id
@@ -59,6 +58,14 @@ public class Reservation {
     private Instant updatedAt = Instant.now();
 
     private Instant deletedAt;
+
+    public Reservation(Court court, User user, Instant startTime, Instant endTime, String gameType) {
+        this.court = court;
+        this.user = user;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        setGameType(gameType);
+    }
 
     public void setGameType(String gameType) {
         if (!gameType.equals("SINGLES") && !gameType.equals("DOUBLES")) {
