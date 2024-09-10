@@ -1,10 +1,12 @@
 package cz.inqool.tennis_club.repository;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
+import cz.inqool.tennis_club.exception.UserNotFoundException;
 import cz.inqool.tennis_club.model.PhoneName;
 import cz.inqool.tennis_club.model.User;
 import jakarta.persistence.EntityManager;
@@ -19,21 +21,21 @@ public class UserRepository {
     private EntityManager entityManager;
 
     @Transactional
-    public UUID create(String name, String phoneNumber) {
+    public User create(String name, String phoneNumber) {
         val phoneName = new PhoneName(phoneNumber, name);
         val user = new User(phoneName);
 
         entityManager.persist(user);
-        return user.getId();
+        return user;
     }
 
-    public User findById(UUID id) {
-        return entityManager.find(User.class, id);
+    public Optional<User> findById(UUID id) {
+        return Optional.ofNullable(entityManager.find(User.class, id));
     }
 
     @Transactional
     public void deleteById(UUID id) {
-        val user = findById(id);
+        val user = findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
         user.setUpdatedAt(Instant.now());
         user.setDeletedAt(Instant.now());

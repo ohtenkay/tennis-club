@@ -2,11 +2,16 @@ package cz.inqool.tennis_club.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import cz.inqool.tennis_club.exception.UserNotFoundException;
 import lombok.val;
 
 @SpringBootTest
@@ -20,8 +25,7 @@ public class UserRepositoryTest {
         val name = "Geralt";
         val phoneNumber = "+420 123 456 789";
 
-        val id = userRepository.create(name, phoneNumber);
-        val savedUser = userRepository.findById(id);
+        val savedUser = userRepository.create(name, phoneNumber);
 
         assertNotNull(savedUser);
         assertEquals(name, savedUser.getPhoneName().getName());
@@ -30,13 +34,14 @@ public class UserRepositoryTest {
 
     @Test
     void testDeleteById() {
-        val id = userRepository.create("Ciri", "+420 222 456 789");
-        userRepository.deleteById(id);
-        val deletedUser = userRepository.findById(id);
+        val savedUser = userRepository.create("Ciri", "+420 222 456 789");
+        userRepository.deleteById(savedUser.getId());
+        val deletedUser = userRepository.findById(savedUser.getId());
 
-        assertNotNull(deletedUser);
-        assertNotNull(deletedUser.getDeletedAt());
-        assertNotNull(deletedUser.getPhoneName().getDeletedAt());
+        assertTrue(deletedUser.isPresent());
+        assertNotNull(deletedUser.get().getDeletedAt());
+        assertNotNull(deletedUser.get().getPhoneName().getDeletedAt());
+        assertThrows(UserNotFoundException.class, () -> userRepository.deleteById(UUID.randomUUID()));
     }
 
 }
