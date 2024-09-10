@@ -3,15 +3,10 @@ package cz.inqool.tennis_club.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import cz.inqool.tennis_club.model.Court;
-import cz.inqool.tennis_club.model.Reservation;
 import lombok.val;
 
 @SpringBootTest

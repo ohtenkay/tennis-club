@@ -7,11 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import cz.inqool.tennis_club.model.PhoneName;
 import cz.inqool.tennis_club.model.User;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-
 import lombok.val;
 
 @Repository
