@@ -59,6 +59,7 @@ public class Reservation {
     private Instant deletedAt;
 
     public Reservation(Court court, User user, Instant startTime, Instant endTime, String gameType) {
+        // TODO: checking of the time range
         this.court = court;
         this.user = user;
         this.startTime = startTime;

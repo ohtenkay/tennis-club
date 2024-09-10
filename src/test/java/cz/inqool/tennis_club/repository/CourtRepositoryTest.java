@@ -31,11 +31,11 @@ public class CourtRepositoryTest {
         val description = "Regular court";
         val surfaceType = surfaceTypeRepository.create("Clay", new BigDecimal(100));
 
-        val savedSurfaceType = courtRepository.create(surfaceType.getId(), name, description);
+        val court = courtRepository.create(surfaceType.getId(), name, description);
 
-        assertNotNull(savedSurfaceType);
-        assertEquals(name, savedSurfaceType.getName());
-        assertEquals(description, savedSurfaceType.getDescription());
+        assertNotNull(court);
+        assertEquals(name, court.getName());
+        assertEquals(description, court.getDescription());
         assertThrows(SurfaceTypeNotFoundException.class,
                 () -> courtRepository.create(UUID.randomUUID(), name, description));
     }
@@ -43,6 +43,7 @@ public class CourtRepositoryTest {
     @Test
     void testDeleteById() {
         val savedSurfaceType = surfaceTypeRepository.create("Synthetic", new BigDecimal(200));
+
         val savedCourt = courtRepository.create(savedSurfaceType.getId(), "Court 2", "More regular court");
         courtRepository.deleteById(savedCourt.getId());
         val deletedCourt = courtRepository.findById(savedCourt.getId());

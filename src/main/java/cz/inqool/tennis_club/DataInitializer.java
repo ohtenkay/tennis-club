@@ -32,7 +32,6 @@ public class DataInitializer implements ApplicationRunner {
         courtRepository.create(st1.getId(), "Court 2", "More regular court");
         courtRepository.create(st2.getId(), "Court 3", "Synthetic court");
         courtRepository.create(st2.getId(), "Court 4", "Synthetic court, but bigger");
-
     }
 
 }

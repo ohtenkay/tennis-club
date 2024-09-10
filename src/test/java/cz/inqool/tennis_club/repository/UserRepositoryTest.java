@@ -25,11 +25,11 @@ public class UserRepositoryTest {
         val name = "Geralt";
         val phoneNumber = "+420 123 456 789";
 
-        val savedUser = userRepository.create(name, phoneNumber);
+        val user = userRepository.create(name, phoneNumber);
 
-        assertNotNull(savedUser);
-        assertEquals(name, savedUser.getPhoneName().getName());
-        assertEquals(phoneNumber, savedUser.getPhoneName().getPhoneNumber());
+        assertNotNull(user);
+        assertEquals(name, user.getPhoneName().getName());
+        assertEquals(phoneNumber, user.getPhoneName().getPhoneNumber());
     }
 
     @Test

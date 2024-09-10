@@ -26,11 +26,11 @@ public class SurfaceTypeRepositoryTest {
         val name = "Clay";
         val pricePerMinute = new BigDecimal(100);
 
-        val savedSurfaceType = surfaceTypeRepository.create(name, pricePerMinute);
+        val surfaceType = surfaceTypeRepository.create(name, pricePerMinute);
 
-        assertNotNull(savedSurfaceType);
-        assertEquals(name, savedSurfaceType.getName());
-        assertEquals(pricePerMinute, savedSurfaceType.getPricePerMinute());
+        assertNotNull(surfaceType);
+        assertEquals(name, surfaceType.getName());
+        assertEquals(pricePerMinute, surfaceType.getPricePerMinute());
     }
 
     @Test
