@@ -9,7 +9,7 @@ CREATE TABLE PhoneName (
     deletedAt TIMESTAMP
 );
 
-CREATE TABLE "USER" (
+CREATE TABLE AppUser (
     id UUID PRIMARY KEY,
     phoneNumber VARCHAR(50) UNIQUE NOT NULL,
     createdAt TIMESTAMP NOT NULL,
@@ -49,5 +49,5 @@ CREATE TABLE Reservation (
     updatedAt TIMESTAMP NOT NULL,
     deletedAt TIMESTAMP,
     FOREIGN KEY (courtId) REFERENCES Court(id),
-    FOREIGN KEY (userId) REFERENCES "USER"(id)
+    FOREIGN KEY (userId) REFERENCES AppUser(id)
 );

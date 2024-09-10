@@ -1,7 +1,7 @@
 @startuml
 skinparam linetype ortho
 
-entity "User" {
+entity "AppUser" {
     *id : <<uuid>>
     *phone_number : text <<UNIQUE>> <<FK>>
     --
@@ -64,8 +64,8 @@ entity "Reservation" {
 }
 
 GameType ||--|| Reservation
-User ||--o{ Reservation
-PhoneName ||--|| User
+AppUser ||--o{ Reservation
+PhoneName ||--|| AppUser
 SurfaceType ||--|| Court
 Court ||--o{ Reservation
 
