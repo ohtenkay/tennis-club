@@ -6,8 +6,11 @@
     <persistence-unit name="cz.inqool.tennis-club">
 
         <class>cz.inqool.tennis_club.model.SurfaceType</class>
+        <class>cz.inqool.tennis_club.model.User</class>
+        <class>cz.inqool.tennis_club.model.PhoneName</class>
+        <class>cz.inqool.tennis_club.model.Court</class>
+        <class>cz.inqool.tennis_club.model.Reservation</class>
 
-        <!-- Hibernate property to auto-detect entities in the specified packages -->
         <properties>
             <!-- H2 in-memory database -->
             <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:testdb"/>
@@ -16,9 +19,6 @@
 
             <!-- Agroal connection pool -->
             <property name="hibernate.agroal.maxSize" value="20"/>
-
-            <!-- Auto-detect entities from the classpath -->
-            <property name="hibernate.archive.autodetection" value="class"/>
 
             <!-- display SQL in console -->
             <property name="hibernate.show_sql" value="true"/>
