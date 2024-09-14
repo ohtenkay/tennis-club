@@ -9,6 +9,7 @@ import cz.inqool.tennis_club.exception.CourtNotFoundException;
 import cz.inqool.tennis_club.exception.SurfaceTypeNotFoundException;
 import cz.inqool.tennis_club.model.Court;
 import cz.inqool.tennis_club.model.create.CourtCreate;
+import cz.inqool.tennis_club.model.update.CourtUpdate;
 import cz.inqool.tennis_club.repository.CourtRepository;
 import cz.inqool.tennis_club.repository.SurfaceTypeRepository;
 import jakarta.transaction.Transactional;
@@ -41,10 +42,24 @@ public class CourtService {
         return court;
     }
 
-    public Court updateCourt(UUID id, Court court) {
-        return null;
+    @Transactional
+    public Court updateCourt(UUID id, CourtUpdate courtUpdate) {
+        val court = getCourtById(id);
+        val surfaceType = surfaceTypeRepository.findById(courtUpdate.surfaceTypeId())
+                .orElseThrow(() -> new SurfaceTypeNotFoundException(courtUpdate.surfaceTypeId()));
+
+        court.setSurfaceType(surfaceType);
+        court.setName(courtUpdate.name());
+        court.setDescription(courtUpdate.description());
+
+        courtRepository.update(court);
+        return court;
     }
 
+    @Transactional
     public void deleteCourt(UUID id) {
+        val court = getCourtById(id);
+
+        courtRepository.delete(court);
     }
 }

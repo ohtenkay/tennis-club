@@ -7,13 +7,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import cz.inqool.tennis_club.exception.CourtNotFoundException;
 import cz.inqool.tennis_club.model.Court;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 
 @Repository
 @RequiredArgsConstructor
@@ -37,9 +35,14 @@ public class CourtRepository {
     }
 
     @Transactional
-    public void deleteById(UUID id) {
-        val court = findById(id).orElseThrow(() -> new CourtNotFoundException(id));
+    public void update(Court court) {
+        court.setUpdatedAt(Instant.now());
 
+        entityManager.merge(court);
+    }
+
+    @Transactional
+    public void delete(Court court) {
         court.setUpdatedAt(Instant.now());
         court.setDeletedAt(Instant.now());
 
