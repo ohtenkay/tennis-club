@@ -32,6 +32,22 @@ public class SurfaceTypeRepositoryTests {
     }
 
     @Test
+    void testUpdate() {
+        val savedSurfaceType = new SurfaceType("Grass", new BigDecimal(150));
+        surfaceTypeRepository.save(savedSurfaceType);
+
+        savedSurfaceType.setName("Hard");
+        savedSurfaceType.setPricePerMinute(new BigDecimal(175));
+        surfaceTypeRepository.update(savedSurfaceType);
+
+        val updatedSurfaceType = surfaceTypeRepository.findById(savedSurfaceType.getId());
+
+        assertTrue(updatedSurfaceType.isPresent());
+        assertEquals(savedSurfaceType.getName(), updatedSurfaceType.get().getName());
+        assertEquals(savedSurfaceType.getPricePerMinute(), updatedSurfaceType.get().getPricePerMinute());
+    }
+
+    @Test
     void testDelete() {
         val savedSurfaceType = new SurfaceType("Synthetic", new BigDecimal(200));
         surfaceTypeRepository.save(savedSurfaceType);
