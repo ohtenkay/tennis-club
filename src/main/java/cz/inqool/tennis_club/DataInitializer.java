@@ -33,12 +33,13 @@ public class DataInitializer implements ApplicationRunner {
         val st2 = new SurfaceType("Synthetic", new BigDecimal(200));
         surfaceTypeRepository.save(st2);
 
-        log.info("Created surface types: \n\t" + st1.getId() + "\n\t" + st2.getId());
+        val c1 = courtService.createCourt(new CourtCreate(st1.getId(), "Court 1", "Regular court"));
+        val c2 = courtService.createCourt(new CourtCreate(st1.getId(), "Court 2", "More regular court"));
+        val c3 = courtService.createCourt(new CourtCreate(st2.getId(), "Court 3", "Synthetic court"));
+        val c4 = courtService.createCourt(new CourtCreate(st2.getId(), "Court 4", "Synthetic court, but bigger"));
 
-        courtService.createCourt(new CourtCreate(st1.getId(), "Court 1", "Regular court"));
-        courtService.createCourt(new CourtCreate(st1.getId(), "Court 2", "More regular court"));
-        courtService.createCourt(new CourtCreate(st2.getId(), "Court 3", "Synthetic court"));
-        courtService.createCourt(new CourtCreate(st2.getId(), "Court 4", "Synthetic court, but bigger"));
+        log.info("Created surface types: \n\t" + st1.getId() + "\n\t" + st2.getId() + "\n");
+        log.info("Created courts: \n\t" + c1.getId() + "\n\t" + c2.getId() + "\n\t" + c3.getId() + "\n\t" + c4.getId());
     }
 
 }
