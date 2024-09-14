@@ -15,7 +15,7 @@ import cz.inqool.tennis_club.exception.UserNotFoundException;
 import lombok.val;
 
 @SpringBootTest
-public class UserRepositoryTest {
+public class UserRepositoryTests {
 
     @Autowired
     private UserRepository userRepository;

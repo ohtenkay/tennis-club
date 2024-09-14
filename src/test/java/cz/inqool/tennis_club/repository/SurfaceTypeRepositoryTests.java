@@ -14,7 +14,7 @@ import cz.inqool.tennis_club.model.SurfaceType;
 import lombok.val;
 
 @SpringBootTest
-public class SurfaceTypeRepositoryTest {
+public class SurfaceTypeRepositoryTests {
 
     @Autowired
     private SurfaceTypeRepository surfaceTypeRepository;
