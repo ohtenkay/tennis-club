@@ -28,6 +28,13 @@ public class SurfaceTypeRepository {
     }
 
     @Transactional
+    public void update(SurfaceType surfaceType) {
+        surfaceType.setUpdatedAt(Instant.now());
+
+        entityManager.merge(surfaceType);
+    }
+
+    @Transactional
     public void delete(SurfaceType surfaceType) {
         surfaceType.setUpdatedAt(Instant.now());
         surfaceType.setDeletedAt(Instant.now());
