@@ -44,10 +44,9 @@ public class CourtService {
 
     @Transactional
     public Court updateCourt(UUID id, CourtUpdate courtUpdate) {
-        val court = getCourtById(id);
         val surfaceType = surfaceTypeRepository.findById(courtUpdate.surfaceTypeId())
                 .orElseThrow(() -> new SurfaceTypeNotFoundException(courtUpdate.surfaceTypeId()));
-
+        val court = getCourtById(id);
         court.setSurfaceType(surfaceType);
         court.setName(courtUpdate.name());
         court.setDescription(courtUpdate.description());
