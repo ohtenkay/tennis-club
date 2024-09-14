@@ -2,17 +2,15 @@ package cz.inqool.tennis_club.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import cz.inqool.tennis_club.exception.SurfaceTypeNotFoundException;
+import cz.inqool.tennis_club.model.SurfaceType;
 import lombok.val;
 
 @SpringBootTest
@@ -22,26 +20,27 @@ public class SurfaceTypeRepositoryTest {
     private SurfaceTypeRepository surfaceTypeRepository;
 
     @Test
-    void testCreate() {
-        val name = "Clay";
-        val pricePerMinute = new BigDecimal(100);
+    void testSave() {
+        val surfaceType = new SurfaceType("Clay", new BigDecimal(100));
+        surfaceTypeRepository.save(surfaceType);
 
-        val surfaceType = surfaceTypeRepository.create(name, pricePerMinute);
+        val savedSurfaceType = surfaceTypeRepository.findById(surfaceType.getId());
 
-        assertNotNull(surfaceType);
-        assertEquals(name, surfaceType.getName());
-        assertEquals(pricePerMinute, surfaceType.getPricePerMinute());
+        assertTrue(savedSurfaceType.isPresent());
+        assertEquals(surfaceType.getName(), savedSurfaceType.get().getName());
+        assertEquals(surfaceType.getPricePerMinute(), savedSurfaceType.get().getPricePerMinute());
     }
 
     @Test
-    void testDeleteById() {
-        val savedSurfaceType = surfaceTypeRepository.create("Synthetic", new BigDecimal(200));
-        surfaceTypeRepository.deleteById(savedSurfaceType.getId());
+    void testDelete() {
+        val savedSurfaceType = new SurfaceType("Synthetic", new BigDecimal(200));
+        surfaceTypeRepository.save(savedSurfaceType);
+
+        surfaceTypeRepository.delete(savedSurfaceType);
         val deletedSurfaceType = surfaceTypeRepository.findById(savedSurfaceType.getId());
 
         assertTrue(deletedSurfaceType.isPresent());
         assertNotNull(deletedSurfaceType.get().getDeletedAt());
-        assertThrows(SurfaceTypeNotFoundException.class, () -> surfaceTypeRepository.deleteById(UUID.randomUUID()));
     }
 
 }

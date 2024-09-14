@@ -43,6 +43,10 @@ dependencies {
         // JPA Metamodel Generator
 	annotationProcessor 'org.hibernate.orm:hibernate-jpamodelgen:6.3.0.Final'
 
+        // SF4J
+        implementation 'org.slf4j:slf4j-api'
+
+        // Lombok
 	compileOnly 'org.projectlombok:lombok:1.18.34'
 	annotationProcessor 'org.projectlombok:lombok:1.18.34'
 	testCompileOnly 'org.projectlombok:lombok:1.18.34'

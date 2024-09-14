@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+// TODO: Add valdations for name and description and so on and handle exceptions if they fail
 @Entity
 @Data
 @NoArgsConstructor
