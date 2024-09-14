@@ -12,16 +12,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "AppUser")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class User {
 
     @Id
@@ -31,7 +30,6 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "phoneNumber", nullable = false, unique = true)
     @NotNull
-    @NonNull
     private PhoneName phoneName;
 
     @NotNull
@@ -41,5 +39,9 @@ public class User {
     private Instant updatedAt = Instant.now();
 
     private Instant deletedAt;
+
+    public User(PhoneName phoneName) {
+        this.phoneName = phoneName;
+    }
 
 }

@@ -11,13 +11,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Reservation {
 
@@ -28,25 +28,20 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "courtId", nullable = false, unique = true)
     @NotNull
-    @NonNull
     private Court court;
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false, unique = true)
     @NotNull
-    @NonNull
     private User user;
 
     @NotNull
-    @NonNull
     private Instant startTime;
 
     @NotNull
-    @NonNull
     private Instant endTime;
 
     @NotNull
-    @NonNull
     @Setter(AccessLevel.NONE)
     private String gameType;
 
@@ -59,7 +54,7 @@ public class Reservation {
     private Instant deletedAt;
 
     public Reservation(Court court, User user, Instant startTime, Instant endTime, String gameType) {
-        // TODO: checking of the time range
+        // TODO: checking of the time range, think about custom validadion
         this.court = court;
         this.user = user;
         this.startTime = startTime;

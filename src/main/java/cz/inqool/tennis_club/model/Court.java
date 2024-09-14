@@ -10,16 +10,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-// TODO: Add valdations for name and description and so on and handle exceptions if they fail
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class Court {
 
     @Id
@@ -29,13 +28,13 @@ public class Court {
     @ManyToOne
     @JoinColumn(name = "surfaceTypeId", nullable = false, unique = true)
     @NotNull
-    @NonNull
     private SurfaceType surfaceType;
 
     @NotNull
-    @NonNull
+    @Size(min = 1, max = 50)
     private String name;
 
+    @Size(max = 255)
     private String description;
 
     @NotNull
@@ -45,5 +44,10 @@ public class Court {
     private Instant updatedAt = Instant.now();
 
     private Instant deletedAt;
+
+    public Court(SurfaceType surfaceType, String name) {
+        this.surfaceType = surfaceType;
+        this.name = name;
+    }
 
 }

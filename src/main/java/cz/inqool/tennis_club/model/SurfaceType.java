@@ -9,15 +9,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class SurfaceType {
 
     @Id
@@ -25,11 +25,10 @@ public class SurfaceType {
     private UUID id;
 
     @NotNull
-    @NonNull
+    @Size(min = 1, max = 50)
     private String name;
 
     @NotNull
-    @NonNull
     private BigDecimal pricePerMinute;
 
     @NotNull
@@ -39,5 +38,10 @@ public class SurfaceType {
     private Instant updatedAt = Instant.now();
 
     private Instant deletedAt;
+
+    public SurfaceType(String name, BigDecimal pricePerMinute) {
+        this.name = name;
+        this.pricePerMinute = pricePerMinute;
+    }
 
 }

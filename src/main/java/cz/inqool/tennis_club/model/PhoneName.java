@@ -6,24 +6,25 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class PhoneName {
 
+    // TODO: Add validation for phone number
     @Id
     @Column(unique = true, nullable = false)
-    @NonNull
+    @NotNull
     private String phoneNumber;
 
     @NotNull
-    @NonNull
+    @Size(min = 1, max = 50)
     private String name;
 
     @NotNull
@@ -33,5 +34,10 @@ public class PhoneName {
     private Instant updatedAt = Instant.now();
 
     private Instant deletedAt;
+
+    public PhoneName(String phoneNumber, String name) {
+        this.phoneNumber = phoneNumber;
+        this.name = name;
+    }
 
 }
