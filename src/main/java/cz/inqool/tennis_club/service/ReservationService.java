@@ -5,12 +5,10 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import cz.inqool.tennis_club.exception.CourtNotFoundException;
 import cz.inqool.tennis_club.exception.ReservationNotFoundException;
 import cz.inqool.tennis_club.exception.UserNotFoundException;
 import cz.inqool.tennis_club.model.Reservation;
 import cz.inqool.tennis_club.model.send.ReservationSend;
-import cz.inqool.tennis_club.repository.CourtRepository;
 import cz.inqool.tennis_club.repository.ReservationRepository;
 import cz.inqool.tennis_club.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -21,7 +19,7 @@ import lombok.val;
 @RequiredArgsConstructor
 public class ReservationService {
 
-    private final CourtRepository courtRepository;
+    private final CourtService courtService;
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
 
@@ -35,8 +33,8 @@ public class ReservationService {
 
     @Transactional
     public Reservation createReservation(ReservationSend reservationSend) {
-        val court = courtRepository.findById(reservationSend.courtId())
-                .orElseThrow(() -> new CourtNotFoundException(reservationSend.courtId()));
+        val court = courtService.getCourtById(reservationSend.courtId());
+        // TODO: Or create
         val user = userRepository.findByPhoneNumber(reservationSend.phoneNumber())
                 .orElseThrow(() -> new UserNotFoundException(reservationSend.phoneNumber()));
         // TODO: Check if the court is available
@@ -51,8 +49,7 @@ public class ReservationService {
 
     @Transactional
     public Reservation updateReservation(UUID id, ReservationSend reservationSend) {
-        val court = courtRepository.findById(reservationSend.courtId())
-                .orElseThrow(() -> new CourtNotFoundException(reservationSend.courtId()));
+        val court = courtService.getCourtById(reservationSend.courtId());
         val user = userRepository.findByPhoneNumber(reservationSend.phoneNumber())
                 .orElseThrow(() -> new UserNotFoundException(reservationSend.phoneNumber()));
         val reservation = getReservationById(id);
