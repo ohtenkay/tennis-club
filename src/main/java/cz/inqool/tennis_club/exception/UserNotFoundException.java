@@ -8,4 +8,8 @@ public class UserNotFoundException extends RuntimeException {
         super("Could not find user with ID: " + userId);
     }
 
+    public UserNotFoundException(String phoneNumber) {
+        super("Could not find user with phone number: " + phoneNumber);
+    }
+
 }

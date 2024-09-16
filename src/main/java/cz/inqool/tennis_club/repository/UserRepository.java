@@ -33,6 +33,16 @@ public class UserRepository {
         return Optional.ofNullable(entityManager.find(User.class, id));
     }
 
+    public Optional<User> findByPhoneNumber(String phoneNumber) {
+        return entityManager
+                .createQuery(
+                        "SELECT u FROM User u WHERE u.phoneName.phoneNumber = :phoneNumber AND u.deletedAt IS NULL",
+                        User.class)
+                .setParameter("phoneNumber", phoneNumber)
+                .getResultStream()
+                .findFirst();
+    }
+
     @Transactional
     public User create(String name, String phoneNumber) {
         val phoneName = new PhoneName(phoneNumber, name);

@@ -5,28 +5,72 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import cz.inqool.tennis_club.exception.CourtNotFoundException;
+import cz.inqool.tennis_club.exception.ReservationNotFoundException;
+import cz.inqool.tennis_club.exception.UserNotFoundException;
 import cz.inqool.tennis_club.model.Reservation;
 import cz.inqool.tennis_club.model.send.ReservationSend;
+import cz.inqool.tennis_club.repository.CourtRepository;
+import cz.inqool.tennis_club.repository.ReservationRepository;
+import cz.inqool.tennis_club.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.val;
 
 @Service
+@RequiredArgsConstructor
 public class ReservationService {
 
+    private final CourtRepository courtRepository;
+    private final UserRepository userRepository;
+    private final ReservationRepository reservationRepository;
+
     public List<Reservation> getAllReservations() {
-        return null;
+        return reservationRepository.findAll();
     }
 
     public Reservation getReservationById(UUID id) {
-        return null;
+        return reservationRepository.findById(id).orElseThrow(() -> new ReservationNotFoundException(id));
     }
 
+    @Transactional
     public Reservation createReservation(ReservationSend reservationSend) {
-        return null;
+        val court = courtRepository.findById(reservationSend.courtId())
+                .orElseThrow(() -> new CourtNotFoundException(reservationSend.courtId()));
+        val user = userRepository.findByPhoneNumber(reservationSend.phoneNumber())
+                .orElseThrow(() -> new UserNotFoundException(reservationSend.phoneNumber()));
+        // TODO: Check if the court is available
+        // TODO: validate the reservation time and change it to fifteen minutes
+        // intervals
+        val reservation = new Reservation(court, user, reservationSend.startTime(), reservationSend.endTime(),
+                reservationSend.gameType());
+
+        reservationRepository.save(reservation);
+        return reservation;
     }
 
+    @Transactional
     public Reservation updateReservation(UUID id, ReservationSend reservationSend) {
-        return null;
+        val court = courtRepository.findById(reservationSend.courtId())
+                .orElseThrow(() -> new CourtNotFoundException(reservationSend.courtId()));
+        val user = userRepository.findByPhoneNumber(reservationSend.phoneNumber())
+                .orElseThrow(() -> new UserNotFoundException(reservationSend.phoneNumber()));
+        val reservation = getReservationById(id);
+        // TODO: The same as in createReservation
+        reservation.setCourt(court);
+        reservation.setUser(user);
+        reservation.setStartTime(reservationSend.startTime());
+        reservation.setEndTime(reservationSend.endTime());
+        reservation.setGameType(reservationSend.gameType());
+
+        reservationRepository.update(reservation);
+        return reservation;
     }
 
+    @Transactional
     public void deleteReservation(UUID id) {
+        val reservation = getReservationById(id);
+
+        reservationRepository.delete(reservation);
     }
 }
