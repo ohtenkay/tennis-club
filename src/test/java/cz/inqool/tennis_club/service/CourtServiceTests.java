@@ -58,7 +58,7 @@ public class CourtServiceTests {
         val savedCourt = courtService.createCourt(new CourtCreate(savedSurfaceType.getId(), "Court 2",
                 "More regular court"));
         courtService.deleteCourt(savedCourt.getId());
-        val deletedCourt = courtRepository.findById(savedCourt.getId());
+        val deletedCourt = courtRepository.findByIdWithDeleted(savedCourt.getId());
 
         assertTrue(deletedCourt.isPresent());
         assertNotNull(deletedCourt.get().getDeletedAt());

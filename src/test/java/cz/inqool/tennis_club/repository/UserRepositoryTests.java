@@ -33,10 +33,10 @@ public class UserRepositoryTests {
     }
 
     @Test
-    void testDeleteById() {
+    void testDelete() {
         val savedUser = userRepository.create("Ciri", "+420 222 456 789");
         userRepository.deleteById(savedUser.getId());
-        val deletedUser = userRepository.findById(savedUser.getId());
+        val deletedUser = userRepository.findByIdWithDeleted(savedUser.getId());
 
         assertTrue(deletedUser.isPresent());
         assertNotNull(deletedUser.get().getDeletedAt());

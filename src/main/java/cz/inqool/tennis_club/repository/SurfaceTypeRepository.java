@@ -19,6 +19,15 @@ public class SurfaceTypeRepository {
     private EntityManager entityManager;
 
     public Optional<SurfaceType> findById(UUID id) {
+        return entityManager
+                .createQuery("SELECT s FROM SurfaceType s WHERE s.id = :id AND s.deletedAt IS NULL", SurfaceType.class)
+                .setParameter("id", id)
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
+
+    public Optional<SurfaceType> findByIdWithDeleted(UUID id) {
         return Optional.ofNullable(entityManager.find(SurfaceType.class, id));
     }
 

@@ -53,7 +53,7 @@ public class SurfaceTypeRepositoryTests {
         surfaceTypeRepository.save(savedSurfaceType);
 
         surfaceTypeRepository.delete(savedSurfaceType);
-        val deletedSurfaceType = surfaceTypeRepository.findById(savedSurfaceType.getId());
+        val deletedSurfaceType = surfaceTypeRepository.findByIdWithDeleted(savedSurfaceType.getId());
 
         assertTrue(deletedSurfaceType.isPresent());
         assertNotNull(deletedSurfaceType.get().getDeletedAt());

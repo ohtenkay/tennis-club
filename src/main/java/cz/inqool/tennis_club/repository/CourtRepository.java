@@ -26,6 +26,14 @@ public class CourtRepository {
     }
 
     public Optional<Court> findById(UUID id) {
+        return entityManager.createQuery("SELECT c FROM Court c WHERE c.id = :id AND c.deletedAt IS NULL", Court.class)
+                .setParameter("id", id)
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
+
+    public Optional<Court> findByIdWithDeleted(UUID id) {
         return Optional.ofNullable(entityManager.find(Court.class, id));
     }
 

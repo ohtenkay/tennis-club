@@ -20,6 +20,19 @@ public class UserRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+    public Optional<User> findById(UUID id) {
+        return entityManager
+                .createQuery("SELECT u FROM User u WHERE u.id = :id AND u.deletedAt IS NULL", User.class)
+                .setParameter("id", id)
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
+
+    public Optional<User> findByIdWithDeleted(UUID id) {
+        return Optional.ofNullable(entityManager.find(User.class, id));
+    }
+
     @Transactional
     public User create(String name, String phoneNumber) {
         val phoneName = new PhoneName(phoneNumber, name);
@@ -27,10 +40,6 @@ public class UserRepository {
 
         entityManager.persist(user);
         return user;
-    }
-
-    public Optional<User> findById(UUID id) {
-        return Optional.ofNullable(entityManager.find(User.class, id));
     }
 
     @Transactional
