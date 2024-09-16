@@ -26,6 +26,7 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
+    // TODO: Filter for user and add option to see only future reservations
     @GetMapping
     public List<Reservation> getAllReservations() {
         return reservationService.getAllReservations();
