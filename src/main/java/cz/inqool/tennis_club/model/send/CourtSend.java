@@ -1,8 +1,8 @@
-package cz.inqool.tennis_club.model.create;
+package cz.inqool.tennis_club.model.send;
 
 import java.util.UUID;
 
-public record CourtCreate(
+public record CourtSend(
         UUID surfaceTypeId,
         String name,
         String description) {
