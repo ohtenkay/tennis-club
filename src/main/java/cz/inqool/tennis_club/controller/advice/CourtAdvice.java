@@ -13,7 +13,7 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.val;
 
 @RestControllerAdvice(assignableTypes = CourtController.class)
-class CourtAdvice {
+public class CourtAdvice {
 
     @ExceptionHandler(CourtNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
