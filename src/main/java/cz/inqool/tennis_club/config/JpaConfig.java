@@ -27,4 +27,5 @@ public class JpaConfig {
     PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
+
 }

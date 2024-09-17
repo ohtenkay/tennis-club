@@ -65,7 +65,7 @@ public class UserService {
             throw new PhoneNumberUsedBeforeException(userUpdate.phoneNumber());
         }
 
-        // Phone number has changed and is unique, update the phoneNumber and name
+        // Phone number has changed and is unique, create a new PhoneName record
         val newPhoneName = new PhoneName(userUpdate.phoneNumber(), userUpdate.name());
         user.setPhoneName(newPhoneName);
 
