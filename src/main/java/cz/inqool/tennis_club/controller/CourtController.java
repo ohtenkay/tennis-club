@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cz.inqool.tennis_club.model.Court;
 import cz.inqool.tennis_club.model.create.CourtCreate;
 import cz.inqool.tennis_club.model.update.CourtUpdate;
+import cz.inqool.tennis_club.model.update.CourtUpdateBody;
 import cz.inqool.tennis_club.service.CourtService;
 import lombok.RequiredArgsConstructor;
 
@@ -46,8 +47,8 @@ public class CourtController {
     }
 
     @PutMapping("/{id}")
-    public Court updateCourt(@PathVariable UUID id, @RequestBody CourtUpdate courtUpdate) {
-        return courtService.updateCourt(id, courtUpdate);
+    public Court updateCourt(@PathVariable UUID id, @RequestBody CourtUpdateBody courtUpdateBody) {
+        return courtService.updateCourt(new CourtUpdate(id, courtUpdateBody));
     }
 
     @DeleteMapping("/{id}")

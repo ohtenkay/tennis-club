@@ -39,11 +39,10 @@ public class CourtService {
         return court;
     }
 
-    // TODO: merge courtupdate and id together
     @Transactional
-    public Court updateCourt(UUID id, CourtUpdate courtUpdate) {
+    public Court updateCourt(CourtUpdate courtUpdate) {
         val surfaceType = surfaceTypeService.getSurfaceType(courtUpdate.surfaceTypeId());
-        val court = getCourtById(id);
+        val court = getCourtById(courtUpdate.id());
         court.setSurfaceType(surfaceType);
         court.setName(courtUpdate.name());
         court.setDescription(courtUpdate.description());

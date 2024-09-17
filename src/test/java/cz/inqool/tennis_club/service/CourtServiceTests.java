@@ -71,33 +71,34 @@ public class CourtServiceTests {
 
         val savedCourt = courtService.createCourt(new CourtCreate(savedSurfaceType.getId(), "Court 2",
                 "More regular court"));
-        val updatedCourt = courtService.updateCourt(savedCourt.getId(),
-                new CourtUpdate(savedSurfaceType.getId(), "Court 3", "Even more regular court"));
+        val updatedCourt = courtService.updateCourt(
+                new CourtUpdate(savedCourt.getId(), savedSurfaceType.getId(), "Court 3", "Even more regular court"));
 
         assertEquals("Court 3", updatedCourt.getName());
         assertEquals("Even more regular court", updatedCourt.getDescription());
 
         assertThrows(SurfaceTypeNotFoundException.class,
-                () -> courtService.updateCourt(savedCourt.getId(),
-                        new CourtUpdate(UUID.randomUUID(), "Court 4", "Even more regular court")));
+                () -> courtService.updateCourt(
+                        new CourtUpdate(savedCourt.getId(), UUID.randomUUID(), "Court 4", "Even more regular court")));
         assertThrows(CourtNotFoundException.class,
-                () -> courtService.updateCourt(UUID.randomUUID(),
-                        new CourtUpdate(savedSurfaceType.getId(), "Court 5", "Even more regular court")));
+                () -> courtService.updateCourt(
+                        new CourtUpdate(UUID.randomUUID(), savedSurfaceType.getId(), "Court 5",
+                                "Even more regular court")));
 
-        val nullDescriptionCourt = courtService.updateCourt(savedCourt.getId(),
-                new CourtUpdate(savedSurfaceType.getId(), "Court 6", null));
+        val nullDescriptionCourt = courtService.updateCourt(
+                new CourtUpdate(savedCourt.getId(), savedSurfaceType.getId(), "Court 6", null));
         assertNull(nullDescriptionCourt.getDescription());
 
         try {
-            courtService.updateCourt(savedCourt.getId(),
-                    new CourtUpdate(savedSurfaceType.getId(), null, "Even more regular court"));
+            courtService.updateCourt(
+                    new CourtUpdate(savedCourt.getId(), savedSurfaceType.getId(), null, "Even more regular court"));
         } catch (Exception e) {
             assertTrue(getRootCause(e) instanceof ConstraintViolationException);
         }
 
         try {
-            courtService.updateCourt(savedCourt.getId(),
-                    new CourtUpdate(savedSurfaceType.getId(), "", "Even more regular court"));
+            courtService.updateCourt(
+                    new CourtUpdate(savedCourt.getId(), savedSurfaceType.getId(), "", "Even more regular court"));
         } catch (Exception e) {
             assertTrue(getRootCause(e) instanceof ConstraintViolationException);
         }
