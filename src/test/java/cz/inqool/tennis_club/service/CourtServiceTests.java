@@ -1,6 +1,6 @@
 package cz.inqool.tennis_club.service;
 
-import static cz.inqool.tennis_club.exception.ExceptionUtils.getRootCause;
+import static cz.inqool.tennis_club.util.ExceptionUtils.getRootCause;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -16,12 +16,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import cz.inqool.tennis_club.exception.CourtNotFoundException;
 import cz.inqool.tennis_club.exception.SurfaceTypeNotFoundException;
-import cz.inqool.tennis_club.model.SurfaceType;
 import cz.inqool.tennis_club.model.create.CourtCreate;
 import cz.inqool.tennis_club.model.create.SurfaceTypeCreate;
 import cz.inqool.tennis_club.model.update.CourtUpdate;
 import cz.inqool.tennis_club.repository.CourtRepository;
-import cz.inqool.tennis_club.repository.SurfaceTypeRepository;
 import jakarta.validation.ConstraintViolationException;
 import lombok.val;
 

@@ -1,4 +1,4 @@
-package cz.inqool.tennis_club.exception;
+package cz.inqool.tennis_club.util;
 
 import java.util.Objects;
 

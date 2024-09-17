@@ -1,5 +1,7 @@
 package cz.inqool.tennis_club.controller.advice;
 
+import static cz.inqool.tennis_club.util.ExceptionUtils.getRootCause;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -7,7 +9,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import cz.inqool.tennis_club.controller.CourtController;
 import cz.inqool.tennis_club.exception.CourtNotFoundException;
-import cz.inqool.tennis_club.exception.ExceptionUtils;
 import cz.inqool.tennis_club.exception.SurfaceTypeNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.val;
@@ -30,7 +31,7 @@ public class CourtAdvice {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     String ExceptionHandler(Exception ex) throws Exception {
-        val rootCause = ExceptionUtils.getRootCause(ex);
+        val rootCause = getRootCause(ex);
         if (rootCause instanceof ConstraintViolationException) {
             return "Error when working with court: \n\t" + rootCause.getMessage();
         }
