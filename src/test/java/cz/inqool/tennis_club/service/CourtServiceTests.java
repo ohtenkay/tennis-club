@@ -18,6 +18,7 @@ import cz.inqool.tennis_club.exception.CourtNotFoundException;
 import cz.inqool.tennis_club.exception.SurfaceTypeNotFoundException;
 import cz.inqool.tennis_club.model.SurfaceType;
 import cz.inqool.tennis_club.model.create.CourtCreate;
+import cz.inqool.tennis_club.model.create.SurfaceTypeCreate;
 import cz.inqool.tennis_club.model.update.CourtUpdate;
 import cz.inqool.tennis_club.repository.CourtRepository;
 import cz.inqool.tennis_club.repository.SurfaceTypeRepository;
@@ -28,18 +29,17 @@ import lombok.val;
 public class CourtServiceTests {
 
     @Autowired
+    private SurfaceTypeService surfaceTypeService;
+    @Autowired
     private CourtService courtService;
     @Autowired
     private CourtRepository courtRepository;
-    @Autowired
-    private SurfaceTypeRepository surfaceTypeRepository;
 
     @Test
     void testCreate() {
         val name = "Court 1";
         val description = "Regular court";
-        val surfaceType = new SurfaceType("Clay", new BigDecimal(100));
-        surfaceTypeRepository.save(surfaceType);
+        val surfaceType = surfaceTypeService.createSurfaceType(new SurfaceTypeCreate("Clay", new BigDecimal(100)));
 
         val court = courtService.createCourt(new CourtCreate(surfaceType.getId(), name, description));
 
@@ -52,8 +52,8 @@ public class CourtServiceTests {
 
     @Test
     void testDelete() {
-        val savedSurfaceType = new SurfaceType("Synthetic", new BigDecimal(200));
-        surfaceTypeRepository.save(savedSurfaceType);
+        val savedSurfaceType = surfaceTypeService
+                .createSurfaceType(new SurfaceTypeCreate("Synthetic", new BigDecimal(200)));
 
         val savedCourt = courtService.createCourt(new CourtCreate(savedSurfaceType.getId(), "Court 2",
                 "More regular court"));
@@ -68,8 +68,8 @@ public class CourtServiceTests {
 
     @Test
     void testUpdate() {
-        val savedSurfaceType = new SurfaceType("Synthetic", new BigDecimal(200));
-        surfaceTypeRepository.save(savedSurfaceType);
+        val savedSurfaceType = surfaceTypeService
+                .createSurfaceType(new SurfaceTypeCreate("Synthetic", new BigDecimal(200)));
 
         val savedCourt = courtService.createCourt(new CourtCreate(savedSurfaceType.getId(), "Court 2",
                 "More regular court"));

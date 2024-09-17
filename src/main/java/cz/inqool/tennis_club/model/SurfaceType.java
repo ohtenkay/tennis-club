@@ -3,6 +3,7 @@ package cz.inqool.tennis_club.model;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import cz.inqool.tennis_club.model.create.SurfaceTypeCreate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,9 +31,9 @@ public class SurfaceType extends AuditableEntity {
     @NotNull
     private BigDecimal pricePerMinute;
 
-    public SurfaceType(String name, BigDecimal pricePerMinute) {
-        this.name = name;
-        this.pricePerMinute = pricePerMinute;
+    public SurfaceType(SurfaceTypeCreate surfaceTypeCreate) {
+        this.name = surfaceTypeCreate.name();
+        this.pricePerMinute = surfaceTypeCreate.pricePerMinute();
     }
 
 }

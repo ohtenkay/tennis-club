@@ -6,10 +6,10 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import cz.inqool.tennis_club.model.SurfaceType;
 import cz.inqool.tennis_club.model.create.CourtCreate;
-import cz.inqool.tennis_club.repository.SurfaceTypeRepository;
+import cz.inqool.tennis_club.model.create.SurfaceTypeCreate;
 import cz.inqool.tennis_club.service.CourtService;
+import cz.inqool.tennis_club.service.SurfaceTypeService;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DataInitializer implements ApplicationRunner {
 
-    private final SurfaceTypeRepository surfaceTypeRepository;
+    private final SurfaceTypeService surfaceTypeService;
     private final CourtService courtService;
 
     @Override
@@ -28,10 +28,8 @@ public class DataInitializer implements ApplicationRunner {
             return;
         }
 
-        val st1 = new SurfaceType("Clay", new BigDecimal(100));
-        surfaceTypeRepository.save(st1);
-        val st2 = new SurfaceType("Synthetic", new BigDecimal(200));
-        surfaceTypeRepository.save(st2);
+        val st1 = surfaceTypeService.createSurfaceType(new SurfaceTypeCreate("Clay", new BigDecimal(100)));
+        val st2 = surfaceTypeService.createSurfaceType(new SurfaceTypeCreate("Synthetic", new BigDecimal(200)));
 
         val c1 = courtService.createCourt(new CourtCreate(st1.getId(), "Court 1", "Regular court"));
         val c2 = courtService.createCourt(new CourtCreate(st1.getId(), "Court 2", "More regular court"));
