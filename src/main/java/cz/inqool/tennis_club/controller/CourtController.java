@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cz.inqool.tennis_club.model.Court;
-import cz.inqool.tennis_club.model.send.CourtSend;
+import cz.inqool.tennis_club.model.create.CourtCreate;
+import cz.inqool.tennis_club.model.update.CourtUpdate;
 import cz.inqool.tennis_club.service.CourtService;
 import lombok.RequiredArgsConstructor;
 
@@ -40,13 +41,13 @@ public class CourtController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Court createCourt(@RequestBody CourtSend courtSend) {
-        return courtService.createCourt(courtSend);
+    public Court createCourt(@RequestBody CourtCreate courtCreate) {
+        return courtService.createCourt(courtCreate);
     }
 
     @PutMapping("/{id}")
-    public Court updateCourt(@PathVariable UUID id, @RequestBody CourtSend courtSend) {
-        return courtService.updateCourt(id, courtSend);
+    public Court updateCourt(@PathVariable UUID id, @RequestBody CourtUpdate courtUpdate) {
+        return courtService.updateCourt(id, courtUpdate);
     }
 
     @DeleteMapping("/{id}")
