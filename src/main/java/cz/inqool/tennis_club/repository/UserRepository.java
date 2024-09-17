@@ -6,14 +6,18 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
-import cz.inqool.tennis_club.exception.UserNotFoundException;
-import cz.inqool.tennis_club.model.PhoneName;
 import cz.inqool.tennis_club.model.User;
 import jakarta.transaction.Transactional;
-import lombok.val;
 
 @Repository
 public class UserRepository extends BaseRepository {
+
+    public boolean phoneNumberHasBeenUsed(String phoneNumber) {
+        return entityManager
+                .createQuery("SELECT COUNT(u) FROM PhoneName u WHERE u.phoneNumber = :phoneNumber", Long.class)
+                .setParameter("phoneNumber", phoneNumber)
+                .getSingleResult() > 0;
+    }
 
     public Optional<User> findById(UUID id) {
         return entityManager
@@ -39,18 +43,15 @@ public class UserRepository extends BaseRepository {
     }
 
     @Transactional
-    public User create(String name, String phoneNumber) {
-        val phoneName = new PhoneName(phoneNumber, name);
-        val user = new User(phoneName);
+    public void update(User user) {
+        user.setUpdatedAt(Instant.now());
+        user.getPhoneName().setUpdatedAt(Instant.now());
 
-        entityManager.persist(user);
-        return user;
+        entityManager.merge(user);
     }
 
     @Transactional
-    public void deleteById(UUID id) {
-        val user = findById(id).orElseThrow(() -> new UserNotFoundException(id));
-
+    public void delete(User user) {
         user.setUpdatedAt(Instant.now());
         user.setDeletedAt(Instant.now());
         user.getPhoneName().setUpdatedAt(Instant.now());

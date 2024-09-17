@@ -2,6 +2,7 @@ package cz.inqool.tennis_club.model;
 
 import java.util.UUID;
 
+import cz.inqool.tennis_club.model.create.UserCreate;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,8 +32,8 @@ public class User extends AuditableEntity {
     @NotNull
     private PhoneName phoneName;
 
-    public User(PhoneName phoneName) {
-        this.phoneName = phoneName;
+    public User(UserCreate userCreate) {
+        this.phoneName = new PhoneName(userCreate.phoneNumber(), userCreate.name());
     }
 
 }
