@@ -23,7 +23,7 @@ public class UserRepositoryTests {
     @Test
     void testCreate() {
         val name = "Geralt";
-        val phoneNumber = "+420 123 456 789";
+        val phoneNumber = "+420123456789";
 
         val user = userRepository.create(name, phoneNumber);
 
@@ -34,7 +34,7 @@ public class UserRepositoryTests {
 
     @Test
     void testDelete() {
-        val savedUser = userRepository.create("Ciri", "+420 222 456 789");
+        val savedUser = userRepository.create("Ciri", "+420222456789");
         userRepository.deleteById(savedUser.getId());
         val deletedUser = userRepository.findByIdWithDeleted(savedUser.getId());
 

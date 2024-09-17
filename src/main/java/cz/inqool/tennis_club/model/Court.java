@@ -1,6 +1,5 @@
 package cz.inqool.tennis_club.model;
 
-import java.time.Instant;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -19,7 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Court {
+public class Court extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -36,14 +35,6 @@ public class Court {
 
     @Size(max = 255)
     private String description;
-
-    @NotNull
-    private Instant createdAt = Instant.now();
-
-    @NotNull
-    private Instant updatedAt = Instant.now();
-
-    private Instant deletedAt;
 
     public Court(SurfaceType surfaceType, String name) {
         this.surfaceType = surfaceType;

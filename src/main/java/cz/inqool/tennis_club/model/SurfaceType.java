@@ -1,7 +1,6 @@
 package cz.inqool.tennis_club.model;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -18,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SurfaceType {
+public class SurfaceType extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -30,14 +29,6 @@ public class SurfaceType {
 
     @NotNull
     private BigDecimal pricePerMinute;
-
-    @NotNull
-    private Instant createdAt = Instant.now();
-
-    @NotNull
-    private Instant updatedAt = Instant.now();
-
-    private Instant deletedAt;
 
     public SurfaceType(String name, BigDecimal pricePerMinute) {
         this.name = name;

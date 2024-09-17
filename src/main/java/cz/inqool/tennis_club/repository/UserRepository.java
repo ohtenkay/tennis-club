@@ -9,16 +9,11 @@ import org.springframework.stereotype.Repository;
 import cz.inqool.tennis_club.exception.UserNotFoundException;
 import cz.inqool.tennis_club.model.PhoneName;
 import cz.inqool.tennis_club.model.User;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.val;
 
 @Repository
-public class UserRepository {
-
-    @PersistenceContext
-    private EntityManager entityManager;
+public class UserRepository extends BaseRepository {
 
     public Optional<User> findById(UUID id) {
         return entityManager

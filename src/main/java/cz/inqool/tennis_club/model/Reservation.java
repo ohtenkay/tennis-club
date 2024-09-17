@@ -19,7 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Reservation {
+public class Reservation extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -44,14 +44,6 @@ public class Reservation {
     @NotNull
     @Setter(AccessLevel.NONE)
     private String gameType;
-
-    @NotNull
-    private Instant createdAt = Instant.now();
-
-    @NotNull
-    private Instant updatedAt = Instant.now();
-
-    private Instant deletedAt;
 
     public Reservation(Court court, User user, Instant startTime, Instant endTime, String gameType) {
         // TODO: checking of the time range, think about custom validadion
