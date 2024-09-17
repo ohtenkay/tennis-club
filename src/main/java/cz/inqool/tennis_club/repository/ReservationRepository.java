@@ -11,8 +11,19 @@ import cz.inqool.tennis_club.model.Reservation;
 @Repository
 public class ReservationRepository extends BaseRepository {
 
-    public List<Reservation> findAll() {
-        return entityManager.createQuery("SELECT r FROM Reservation r WHERE r.deletedAt IS NULL", Reservation.class)
+    public List<Reservation> find(String phoneNumber, boolean future, UUID courtId, String order) {
+        return entityManager
+                .createQuery(
+                        "SELECT r FROM Reservation r WHERE (:phoneNumber IS NULL OR r.user.phoneName.phoneNumber = :phoneNumber) "
+                                + "AND (NOT :future OR r.startTime > CURRENT_TIMESTAMP) "
+                                + "AND (:courtId IS NULL OR r.court.id = :courtId) "
+                                + "AND r.deletedAt IS NULL "
+                                + "ORDER BY r.startTime " + order,
+                        Reservation.class)
+                .setParameter("phoneNumber", phoneNumber)
+                .setParameter("future", future)
+                .setParameter("courtId", courtId)
+                .setParameter("order", order)
                 .getResultList();
     }
 

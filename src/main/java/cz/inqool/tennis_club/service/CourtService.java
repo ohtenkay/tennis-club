@@ -21,6 +21,10 @@ public class CourtService {
     public final SurfaceTypeService surfaceTypeService;
     public final CourtRepository courtRepository;
 
+    public boolean courtExists(UUID id) {
+        return courtRepository.existsById(id);
+    }
+
     public List<Court> getAllCourts() {
         return courtRepository.findAll();
     }

@@ -11,4 +11,5 @@ public record CourtUpdate(
     public CourtUpdate(UUID id, CourtUpdateBody courtUpdateBody) {
         this(id, courtUpdateBody.surfaceTypeId(), courtUpdateBody.name(), courtUpdateBody.description());
     }
+
 }

@@ -1,5 +1,7 @@
 package cz.inqool.tennis_club.controller;
 
+import static cz.inqool.tennis_club.util.PhoneNumberUtils.normalizePhoneNumber;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -11,11 +13,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cz.inqool.tennis_club.model.Reservation;
-import cz.inqool.tennis_club.model.send.ReservationSend;
+import cz.inqool.tennis_club.model.create.ReservationCreate;
+import cz.inqool.tennis_club.model.update.ReservationUpdate;
+import cz.inqool.tennis_club.model.update.ReservationUpdateBody;
 import cz.inqool.tennis_club.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 
@@ -26,10 +31,11 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
-    // TODO: Filter for user and add option to see only future reservations
     @GetMapping
-    public List<Reservation> getAllReservations() {
-        return reservationService.getAllReservations();
+    public List<Reservation> getReservations(@RequestParam(required = false) String phoneNumber,
+            @RequestParam(defaultValue = "false") boolean future, @RequestParam(required = false) UUID courtId,
+            @RequestParam(defaultValue = "asc") String order) {
+        return reservationService.getReservations(normalizePhoneNumber(phoneNumber), future, courtId, order);
     }
 
     @GetMapping("/{id}")
@@ -37,15 +43,17 @@ public class ReservationController {
         return reservationService.getReservationById(id);
     }
 
+    // TODO: Reservation response
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Reservation createReservation(@RequestBody ReservationSend reservationSend) {
-        return reservationService.createReservation(reservationSend);
+    public Reservation createReservation(@RequestBody ReservationCreate reservationCreate) {
+        return reservationService.createReservation(reservationCreate);
     }
 
     @PutMapping("/{id}")
-    public Reservation updateReservation(@PathVariable UUID id, @RequestBody ReservationSend reservationSend) {
-        return reservationService.updateReservation(id, reservationSend);
+    public Reservation updateReservation(@PathVariable UUID id,
+            @RequestBody ReservationUpdateBody reservationUpdateBody) {
+        return reservationService.updateReservation(new ReservationUpdate(id, reservationUpdateBody));
     }
 
     @DeleteMapping("/{id}")

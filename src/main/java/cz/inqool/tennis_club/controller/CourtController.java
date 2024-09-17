@@ -38,8 +38,6 @@ public class CourtController {
         return courtService.getCourtById(id);
     }
 
-    // TODO: Get all reservations for court
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Court createCourt(@RequestBody CourtCreate courtCreate) {

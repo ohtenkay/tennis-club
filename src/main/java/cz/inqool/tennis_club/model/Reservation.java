@@ -3,6 +3,7 @@ package cz.inqool.tennis_club.model;
 import java.time.Instant;
 import java.util.UUID;
 
+import cz.inqool.tennis_club.model.create.ReservationCreate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -42,23 +43,16 @@ public class Reservation extends AuditableEntity {
     private Instant endTime;
 
     @NotNull
-    @Setter(AccessLevel.NONE)
+    @Pattern(regexp = "SINGLES|DOUBLES")
     private String gameType;
 
-    public Reservation(Court court, User user, Instant startTime, Instant endTime, String gameType) {
-        // TODO: checking of the time range, think about custom validadion
+    // TODO: thin about this
+    public Reservation(Court court, User user, ReservationCreate reservationCreate) {
         this.court = court;
         this.user = user;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        setGameType(gameType);
-    }
-
-    public void setGameType(String gameType) {
-        if (!gameType.equals("SINGLES") && !gameType.equals("DOUBLES")) {
-            throw new IllegalArgumentException("Invalid game type: " + gameType);
-        }
-        this.gameType = gameType;
+        this.startTime = reservationCreate.startTime();
+        this.endTime = reservationCreate.endTime();
+        this.gameType = reservationCreate.gameType();
     }
 
 }

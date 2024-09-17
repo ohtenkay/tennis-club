@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import cz.inqool.tennis_club.controller.ReservationController;
 import cz.inqool.tennis_club.exception.CourtNotFoundException;
+import cz.inqool.tennis_club.exception.InvalidOrderException;
 import cz.inqool.tennis_club.exception.PhoneNumberUsedBeforeException;
 import cz.inqool.tennis_club.exception.ReservationNotFoundException;
 import cz.inqool.tennis_club.exception.UserNotFoundException;
@@ -39,6 +40,12 @@ public class ReservationAdvice {
     @ExceptionHandler(PhoneNumberUsedBeforeException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     String PhoneNumberUsedBeforeHandler(PhoneNumberUsedBeforeException ex) {
+        return "Error when working with reservation: \n\t" + ex.getMessage();
+    }
+
+    @ExceptionHandler(InvalidOrderException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String InvalidOrderHandler(InvalidOrderException ex) {
         return "Error when working with reservation: \n\t" + ex.getMessage();
     }
 

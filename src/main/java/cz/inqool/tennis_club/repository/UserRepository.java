@@ -12,6 +12,10 @@ import jakarta.transaction.Transactional;
 @Repository
 public class UserRepository extends BaseRepository {
 
+    public boolean existsByPhoneNumber(String phoneNumber) {
+        return findByPhoneNumber(phoneNumber).isPresent();
+    }
+
     public boolean phoneNumberHasBeenUsed(String phoneNumber) {
         return entityManager
                 .createQuery("SELECT COUNT(u) FROM PhoneName u WHERE u.phoneNumber = :phoneNumber", Long.class)

@@ -21,6 +21,10 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    public boolean userExists(String phoneNumber) {
+        return userRepository.existsByPhoneNumber(phoneNumber);
+    }
+
     public User getUserById(UUID id) {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }

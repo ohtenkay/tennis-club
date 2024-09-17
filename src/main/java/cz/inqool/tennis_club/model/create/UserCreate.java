@@ -9,4 +9,9 @@ public record UserCreate(
     public UserCreate {
         phoneNumber = normalizePhoneNumber(phoneNumber);
     }
+
+    public UserCreate(ReservationCreate reservationCreate) {
+        this(reservationCreate.phoneNumber(), reservationCreate.name());
+    }
+
 }

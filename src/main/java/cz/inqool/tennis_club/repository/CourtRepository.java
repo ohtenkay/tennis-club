@@ -13,6 +13,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CourtRepository extends BaseRepository {
 
+    public boolean existsById(UUID id) {
+        return findById(id).isPresent();
+    }
+
     public List<Court> findAll() {
         return entityManager.createQuery("SELECT c FROM Court c WHERE c.deletedAt IS NULL", Court.class)
                 .getResultList();
