@@ -1,4 +1,4 @@
-package cz.inqool.tennis_club;
+package cz.inqool.tennis_club.util;
 
 import java.math.BigDecimal;
 
@@ -22,6 +22,7 @@ public class DataInitializer implements ApplicationRunner {
     private final SurfaceTypeService surfaceTypeService;
     private final CourtService courtService;
 
+    // TODO: refactor and use in tests
     @Override
     public void run(ApplicationArguments args) {
         if (!args.containsOption("seed")) {

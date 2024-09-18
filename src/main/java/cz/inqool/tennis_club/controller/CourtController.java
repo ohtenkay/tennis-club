@@ -54,4 +54,5 @@ public class CourtController {
     public void deleteCourt(@PathVariable UUID id) {
         courtService.deleteCourt(id);
     }
+
 }
