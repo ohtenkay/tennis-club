@@ -19,11 +19,24 @@ public class SurfaceTypeService {
 
     public final SurfaceTypeRepository surfaceTypeRepository;
 
+    /**
+     * Get surface type by id
+     *
+     * @param id surface type id
+     * @return surface type
+     * @throws SurfaceTypeNotFoundException if surface type does not exist
+     */
     public SurfaceType getSurfaceType(UUID id) {
         return surfaceTypeRepository.findById(id)
                 .orElseThrow(() -> new SurfaceTypeNotFoundException(id));
     }
 
+    /**
+     * Create new surface type
+     *
+     * @param surfaceTypeCreate surface type data
+     * @return created surface type
+     */
     @Transactional
     public SurfaceType createSurfaceType(SurfaceTypeCreate surfaceTypeCreate) {
         val surfaceType = new SurfaceType(surfaceTypeCreate);
@@ -32,6 +45,13 @@ public class SurfaceTypeService {
         return surfaceType;
     }
 
+    /**
+     * Update surface type
+     *
+     * @param surfaceTypeUpdate surface type data
+     * @return updated surface type
+     * @throws SurfaceTypeNotFoundException if surface type does not exist
+     */
     @Transactional
     public SurfaceType updateSurfaceType(SurfaceTypeUpdate surfaceTypeUpdate) {
         val surfaceType = getSurfaceType(surfaceTypeUpdate.id());
@@ -42,6 +62,12 @@ public class SurfaceTypeService {
         return surfaceType;
     }
 
+    /**
+     * Delete surface type
+     *
+     * @param id surface type id
+     * @throws SurfaceTypeNotFoundException if surface type does not exist
+     */
     @Transactional
     public void deleteSurfaceType(UUID id) {
         val surfaceType = getSurfaceType(id);

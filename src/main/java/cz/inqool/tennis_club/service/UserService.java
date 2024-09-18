@@ -21,18 +21,46 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    /**
+     * Check if a user with the given phone number exists
+     *
+     * @param phoneNumber
+     * @return true if the user exists
+     */
     public boolean userExists(String phoneNumber) {
         return userRepository.existsByPhoneNumber(phoneNumber);
     }
 
+    /**
+     * Get user by ID
+     *
+     * @param id
+     * @return user
+     * @throws UserNotFoundException if the user does not exist
+     */
     public User getUserById(UUID id) {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
+    /**
+     * Get user by phone number
+     *
+     * @param phoneNumber
+     * @return user
+     * @throws UserNotFoundException if the user does not exist
+     */
     public User getUserByPhoneNumber(String phoneNumber) {
         return userRepository.findByPhoneNumber(phoneNumber).orElseThrow(() -> new UserNotFoundException(phoneNumber));
     }
 
+    /**
+     * Create a new user
+     *
+     * @param userCreate
+     * @return user
+     * @throws PhoneNumberUsedBeforeException if the phone number has been used
+     *                                        before
+     */
     @Transactional
     public User createUser(UserCreate userCreate) {
         if (userRepository.phoneNumberHasBeenUsed(userCreate.phoneNumber())) {
@@ -45,11 +73,26 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Get or create a user
+     *
+     * @param userCreate
+     * @return user
+     */
     @Transactional
     public User getOrCreateUser(UserCreate userCreate) {
         return userRepository.findByPhoneNumber(userCreate.phoneNumber()).orElseGet(() -> createUser(userCreate));
     }
 
+    /**
+     * Update a user
+     *
+     * @param userUpdate
+     * @return user
+     * @throws PhoneNumberUsedBeforeException if the phone number has been used
+     *                                        before
+     * @throws UserNotFoundException          if the user does not exist
+     */
     @Transactional
     public User updateUser(UserUpdate userUpdate) {
         val user = getUserById(userUpdate.id());
@@ -73,6 +116,12 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Delete a user
+     *
+     * @param id
+     * @throws UserNotFoundException if the user does not exist
+     */
     @Transactional
     public void deleteUser(UUID id) {
         val user = getUserById(id);

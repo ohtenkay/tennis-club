@@ -21,18 +21,43 @@ public class CourtService {
     public final SurfaceTypeService surfaceTypeService;
     public final CourtRepository courtRepository;
 
+    /**
+     * Check if court exists
+     *
+     * @param id
+     * @return true if court exists
+     */
     public boolean courtExists(UUID id) {
         return courtRepository.existsById(id);
     }
 
+    /**
+     * Get all courts
+     *
+     * @return list of courts
+     */
     public List<Court> getAllCourts() {
         return courtRepository.findAll();
     }
 
+    /**
+     * Get court by id
+     *
+     * @param id
+     * @return court
+     * @throws CourtNotFoundException if court does not exist
+     */
     public Court getCourtById(UUID id) {
         return courtRepository.findById(id).orElseThrow(() -> new CourtNotFoundException(id));
     }
 
+    /**
+     * Create a new court
+     *
+     * @param courtCreate
+     * @return created court
+     * @throws SurfaceTypeNotFoundException if surface type does not exist
+     */
     @Transactional
     public Court createCourt(CourtCreate courtCreate) {
         val surfaceType = surfaceTypeService.getSurfaceType(courtCreate.surfaceTypeId());
@@ -43,6 +68,14 @@ public class CourtService {
         return court;
     }
 
+    /**
+     * Update court
+     *
+     * @param courtUpdate
+     * @return updated court
+     * @throws SurfaceTypeNotFoundException if surface type does not exist
+     * @throws CourtNotFoundException       if court does not exist
+     */
     @Transactional
     public Court updateCourt(CourtUpdate courtUpdate) {
         val surfaceType = surfaceTypeService.getSurfaceType(courtUpdate.surfaceTypeId());
@@ -55,6 +88,12 @@ public class CourtService {
         return court;
     }
 
+    /**
+     * Delete court
+     *
+     * @param id
+     * @throws CourtNotFoundException if court does not exist
+     */
     @Transactional
     public void deleteCourt(UUID id) {
         val court = getCourtById(id);
