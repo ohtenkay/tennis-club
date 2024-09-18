@@ -1,13 +1,13 @@
 package cz.inqool.tennis_club.model.create;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record ReservationCreate(
         UUID courtId,
         String phoneNumber,
         String name,
-        Instant startTime,
-        Instant endTime,
+        LocalDateTime startTime,
+        LocalDateTime endTime,
         String gameType) {
 }

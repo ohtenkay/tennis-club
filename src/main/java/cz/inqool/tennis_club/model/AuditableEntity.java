@@ -1,6 +1,6 @@
 package cz.inqool.tennis_club.model;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotNull;
@@ -13,11 +13,11 @@ import lombok.Setter;
 public abstract class AuditableEntity {
 
     @NotNull
-    private Instant createdAt = Instant.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @NotNull
-    private Instant updatedAt = Instant.now();
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
-    private Instant deletedAt;
+    private LocalDateTime deletedAt;
 
 }

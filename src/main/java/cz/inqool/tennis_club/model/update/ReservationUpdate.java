@@ -1,14 +1,14 @@
 package cz.inqool.tennis_club.model.update;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record ReservationUpdate(
         UUID id,
         UUID courtId,
         UUID userId,
-        Instant startTime,
-        Instant endTime,
+        LocalDateTime startTime,
+        LocalDateTime endTime,
         String gameType) {
 
     public ReservationUpdate(UUID id, ReservationUpdateBody reservationUpdateBody) {

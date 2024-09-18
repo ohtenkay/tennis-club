@@ -1,6 +1,6 @@
 package cz.inqool.tennis_club.repository;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -48,18 +48,18 @@ public class UserRepository extends BaseRepository {
 
     @Transactional
     public void update(User user) {
-        user.setUpdatedAt(Instant.now());
-        user.getPhoneName().setUpdatedAt(Instant.now());
+        user.setUpdatedAt(LocalDateTime.now());
+        user.getPhoneName().setUpdatedAt(LocalDateTime.now());
 
         entityManager.merge(user);
     }
 
     @Transactional
     public void delete(User user) {
-        user.setUpdatedAt(Instant.now());
-        user.setDeletedAt(Instant.now());
-        user.getPhoneName().setUpdatedAt(Instant.now());
-        user.getPhoneName().setDeletedAt(Instant.now());
+        user.setUpdatedAt(LocalDateTime.now());
+        user.setDeletedAt(LocalDateTime.now());
+        user.getPhoneName().setUpdatedAt(LocalDateTime.now());
+        user.getPhoneName().setDeletedAt(LocalDateTime.now());
 
         entityManager.merge(user);
     }

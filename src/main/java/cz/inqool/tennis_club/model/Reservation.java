@@ -1,6 +1,6 @@
 package cz.inqool.tennis_club.model;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import cz.inqool.tennis_club.model.create.ReservationCreate;
@@ -37,10 +37,10 @@ public class Reservation extends AuditableEntity {
     private User user;
 
     @NotNull
-    private Instant startTime;
+    private LocalDateTime startTime;
 
     @NotNull
-    private Instant endTime;
+    private LocalDateTime endTime;
 
     @NotNull
     @Pattern(regexp = "SINGLES|DOUBLES")
