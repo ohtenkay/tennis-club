@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cz.inqool.tennis_club.model.Reservation;
 import cz.inqool.tennis_club.model.create.ReservationCreate;
+import cz.inqool.tennis_club.model.response.ReservationResponse;
 import cz.inqool.tennis_club.model.update.ReservationUpdate;
 import cz.inqool.tennis_club.model.update.ReservationUpdateBody;
 import cz.inqool.tennis_club.service.ReservationService;
@@ -43,15 +44,14 @@ public class ReservationController {
         return reservationService.getReservationById(id);
     }
 
-    // TODO: Reservation response
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Reservation createReservation(@RequestBody ReservationCreate reservationCreate) {
+    public ReservationResponse createReservation(@RequestBody ReservationCreate reservationCreate) {
         return reservationService.createReservation(reservationCreate);
     }
 
     @PutMapping("/{id}")
-    public Reservation updateReservation(@PathVariable UUID id,
+    public ReservationResponse updateReservation(@PathVariable UUID id,
             @RequestBody ReservationUpdateBody reservationUpdateBody) {
         return reservationService.updateReservation(new ReservationUpdate(id, reservationUpdateBody));
     }

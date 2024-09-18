@@ -18,6 +18,7 @@ import cz.inqool.tennis_club.exception.UserNotFoundException;
 import cz.inqool.tennis_club.model.Reservation;
 import cz.inqool.tennis_club.model.create.ReservationCreate;
 import cz.inqool.tennis_club.model.create.UserCreate;
+import cz.inqool.tennis_club.model.response.ReservationResponse;
 import cz.inqool.tennis_club.model.update.ReservationUpdate;
 import cz.inqool.tennis_club.repository.ReservationRepository;
 import cz.inqool.tennis_club.util.DateTimeUtils.IntervalBoundary;
@@ -56,7 +57,7 @@ public class ReservationService {
     }
 
     @Transactional
-    public Reservation createReservation(ReservationCreate reservationCreate) {
+    public ReservationResponse createReservation(ReservationCreate reservationCreate) {
         val court = courtService.getCourtById(reservationCreate.courtId());
         val user = userService.getOrCreateUser(new UserCreate(reservationCreate));
 
@@ -69,11 +70,11 @@ public class ReservationService {
         val reservation = new Reservation(court, user, startTime, endTime, reservationCreate.gameType());
 
         reservationRepository.save(reservation);
-        return reservation;
+        return new ReservationResponse(reservation);
     }
 
     @Transactional
-    public Reservation updateReservation(ReservationUpdate reservationUpdate) {
+    public ReservationResponse updateReservation(ReservationUpdate reservationUpdate) {
         val court = courtService.getCourtById(reservationUpdate.courtId());
         val user = userService.getUserById(reservationUpdate.userId());
         val reservation = getReservationById(reservationUpdate.id());
@@ -91,7 +92,7 @@ public class ReservationService {
         reservation.setGameType(reservationUpdate.gameType());
 
         reservationRepository.update(reservation);
-        return reservation;
+        return new ReservationResponse(reservation);
     }
 
     @Transactional
