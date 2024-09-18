@@ -8,8 +8,9 @@ import org.springframework.stereotype.Repository;
 import cz.inqool.tennis_club.model.SurfaceType;
 
 @Repository
-public class SurfaceTypeRepository extends BaseRepository {
+public class SurfaceTypeRepository extends BaseRepository implements IdentifiableRepository<SurfaceType, UUID> {
 
+    @Override
     public Optional<SurfaceType> findById(UUID id) {
         return entityManager
                 .createQuery("SELECT s FROM SurfaceType s WHERE s.id = :id AND s.deletedAt IS NULL", SurfaceType.class)
@@ -19,6 +20,7 @@ public class SurfaceTypeRepository extends BaseRepository {
                 .findFirst();
     }
 
+    @Override
     public Optional<SurfaceType> findByIdWithDeleted(UUID id) {
         return Optional.ofNullable(entityManager.find(SurfaceType.class, id));
     }

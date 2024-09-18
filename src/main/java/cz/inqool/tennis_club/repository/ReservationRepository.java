@@ -10,8 +10,17 @@ import org.springframework.stereotype.Repository;
 import cz.inqool.tennis_club.model.Reservation;
 
 @Repository
-public class ReservationRepository extends BaseRepository {
+public class ReservationRepository extends BaseRepository implements IdentifiableRepository<Reservation, UUID> {
 
+    /**
+     * Find reservations wiht speficified filters
+     *
+     * @param phoneNumber phone number of user
+     * @param future      if true, only future reservations are returned
+     * @param courtId     id of court
+     * @param order       ordering, e.g. "ASC" or "DESC"
+     * @return list of reservations
+     */
     public List<Reservation> find(String phoneNumber, boolean future, UUID courtId, String order) {
         return entityManager
                 .createQuery(
@@ -28,6 +37,7 @@ public class ReservationRepository extends BaseRepository {
                 .getResultList();
     }
 
+    @Override
     public Optional<Reservation> findById(UUID id) {
         return entityManager
                 .createQuery("SELECT r FROM Reservation r WHERE r.id = :id AND r.deletedAt IS NULL", Reservation.class)
@@ -37,10 +47,20 @@ public class ReservationRepository extends BaseRepository {
                 .findFirst();
     }
 
+    @Override
     public Optional<Reservation> findByIdWithDeleted(UUID id) {
         return Optional.ofNullable(entityManager.find(Reservation.class, id));
     }
 
+    /**
+     * Checks if a court is already reserved in a given interval
+     *
+     * @param reservationId id of reservation to exclude, use for update
+     * @param courtId       id of court
+     * @param startTime     start time of reservation
+     * @param endTime       end time of reservation
+     * @return true if court is already reserved
+     */
     public boolean existsForCourtInInterval(UUID reservationId, UUID courtId, LocalDateTime startTime,
             LocalDateTime endTime) {
         return entityManager
