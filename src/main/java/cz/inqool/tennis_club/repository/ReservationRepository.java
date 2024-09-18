@@ -1,5 +1,6 @@
 package cz.inqool.tennis_club.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,6 +39,22 @@ public class ReservationRepository extends BaseRepository {
 
     public Optional<Reservation> findByIdWithDeleted(UUID id) {
         return Optional.ofNullable(entityManager.find(Reservation.class, id));
+    }
+
+    public boolean existsForCourtInInterval(UUID reservationId, UUID courtId, LocalDateTime startTime,
+            LocalDateTime endTime) {
+        return entityManager
+                .createQuery(
+                        "SELECT COUNT(r) > 0 FROM Reservation r WHERE r.court.id = :courtId "
+                                + "AND (:reservationId IS NULL OR r.id != :reservationId) "
+                                + "AND r.deletedAt IS NULL "
+                                + "AND (:startTime < r.endTime AND r.startTime < :endTime)",
+                        Boolean.class)
+                .setParameter("reservationId", reservationId)
+                .setParameter("courtId", courtId)
+                .setParameter("startTime", startTime)
+                .setParameter("endTime", endTime)
+                .getSingleResult();
     }
 
 }

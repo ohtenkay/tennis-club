@@ -3,7 +3,6 @@ package cz.inqool.tennis_club.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import cz.inqool.tennis_club.model.create.ReservationCreate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -46,13 +45,12 @@ public class Reservation extends AuditableEntity {
     @Pattern(regexp = "SINGLES|DOUBLES")
     private String gameType;
 
-    // TODO: thin about this
-    public Reservation(Court court, User user, ReservationCreate reservationCreate) {
+    public Reservation(Court court, User user, LocalDateTime startTime, LocalDateTime endTime, String gameType) {
         this.court = court;
         this.user = user;
-        this.startTime = reservationCreate.startTime();
-        this.endTime = reservationCreate.endTime();
-        this.gameType = reservationCreate.gameType();
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.gameType = gameType;
     }
 
 }
