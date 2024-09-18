@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.3'
 	id 'io.spring.dependency-management' version '1.1.6'
+        id 'jacoco'
 }
 
 group = 'cz.inqool'
@@ -58,4 +59,21 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+test {
+      finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+        dependsOn test
+        reports {
+                xml.required = false
+                csv.required = false
+                html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+            }
+}
+
+jacoco {
+        toolVersion = "0.8.12"
 }
