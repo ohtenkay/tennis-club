@@ -58,7 +58,7 @@ public class ReservationAdvice {
     }
 
     @ExceptionHandler(CourtAlreadyReservedException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.CONFLICT)
     String CourtAlreadyReservedHandler(CourtAlreadyReservedException ex) {
         return "Error when working with reservation: \n\t" + ex.getMessage();
     }

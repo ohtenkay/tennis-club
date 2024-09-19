@@ -10,4 +10,16 @@ public record ReservationCreate(
         LocalDateTime startTime,
         LocalDateTime endTime,
         String gameType) {
+
+    public String json() {
+        return "{\n" +
+                "  \"courtId\": \"" + courtId + "\",\n" +
+                "  \"phoneNumber\": \"" + phoneNumber + "\",\n" +
+                "  \"name\": \"" + name + "\",\n" +
+                "  \"startTime\": \"" + startTime + "\",\n" +
+                "  \"endTime\": \"" + endTime + "\",\n" +
+                "  \"gameType\": \"" + gameType + "\"\n" +
+                "}";
+    }
+
 }
