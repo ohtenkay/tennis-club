@@ -25,7 +25,7 @@ public class ReservationRepository extends BaseRepository implements Identifiabl
         return entityManager
                 .createQuery(
                         "SELECT r FROM Reservation r WHERE (:phoneNumber IS NULL OR r.user.phoneName.phoneNumber = :phoneNumber) "
-                                + "AND (NOT :future OR r.startTime > CURRENT_TIMESTAMP) "
+                                + "AND (:future IS FALSE OR r.startTime > CURRENT_TIMESTAMP) "
                                 + "AND (:courtId IS NULL OR r.court.id = :courtId) "
                                 + "AND r.deletedAt IS NULL "
                                 + "ORDER BY r.startTime " + order,
@@ -33,7 +33,6 @@ public class ReservationRepository extends BaseRepository implements Identifiabl
                 .setParameter("phoneNumber", phoneNumber)
                 .setParameter("future", future)
                 .setParameter("courtId", courtId)
-                .setParameter("order", order)
                 .getResultList();
     }
 
