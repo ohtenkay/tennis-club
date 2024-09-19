@@ -28,8 +28,16 @@ public final class DateTimeUtils {
             IntervalBoundary boundary) {
         val minute = localDateTime.getMinute();
         val remainder = minute % intervalDuration;
+        if (remainder == 0) {
+            return localDateTime.withSecond(0).withNano(0);
+        }
+
         val closestIntervalMark = minute - remainder + (boundary == IntervalBoundary.UPPER ? intervalDuration : 0);
+        if (closestIntervalMark == 60) {
+            return localDateTime.plusHours(1).withMinute(0).withSecond(0).withNano(0);
+        }
 
         return localDateTime.withMinute(closestIntervalMark).withSecond(0).withNano(0);
     }
+
 }

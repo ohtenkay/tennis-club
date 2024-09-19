@@ -190,8 +190,8 @@ public class ReservationService {
             throw new InvalidReservationTimeException("The reservation time cannot be more than 8 hours long");
         }
 
-        val newStartTime = getClosestIntervalMark(startTime, 15, IntervalBoundary.UPPER);
-        val newEndTime = getClosestIntervalMark(endTime, 15, IntervalBoundary.LOWER);
+        val newStartTime = getClosestIntervalMark(startTime, 15, IntervalBoundary.LOWER);
+        val newEndTime = getClosestIntervalMark(endTime, 15, IntervalBoundary.UPPER);
 
         return new Pair<>(newStartTime, newEndTime);
     }
