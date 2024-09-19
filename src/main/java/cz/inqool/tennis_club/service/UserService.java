@@ -81,7 +81,11 @@ public class UserService {
      */
     @Transactional
     public User getOrCreateUser(UserCreate userCreate) {
-        return userRepository.findByPhoneNumber(userCreate.phoneNumber()).orElseGet(() -> createUser(userCreate));
+        try {
+            return getUserByPhoneNumber(userCreate.phoneNumber());
+        } catch (UserNotFoundException e) {
+            return createUser(userCreate);
+        }
     }
 
     /**

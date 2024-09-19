@@ -1,5 +1,6 @@
 package cz.inqool.tennis_club.controller;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -19,8 +20,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import cz.inqool.tennis_club.exception.ReservationNotFoundException;
 import cz.inqool.tennis_club.model.Court;
-import cz.inqool.tennis_club.model.SurfaceType;
 import cz.inqool.tennis_club.model.User;
 import cz.inqool.tennis_club.model.create.ReservationCreate;
 import cz.inqool.tennis_club.model.response.ReservationResponse;
@@ -44,7 +45,6 @@ public class ReservationControllerTests {
     @Autowired
     private ReservationService reservationService;
     private static final String RESERVATIONS = "/api/reservations";
-    private static List<SurfaceType> surfaceTypes;
     private static List<Court> courts;
     private static List<User> users;
     private static List<ReservationResponse> reservations;
@@ -52,7 +52,6 @@ public class ReservationControllerTests {
     @BeforeAll
     public void setUp() {
         val surfaceTypesAndCourts = dataInitializer.seedSurfaceTypesAndCourts();
-        surfaceTypes = surfaceTypesAndCourts.first();
         courts = surfaceTypesAndCourts.second();
 
         val usersAndReservations = dataInitializer.seedUsersAndReservations(courts);
@@ -76,6 +75,69 @@ public class ReservationControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    @Test
+    public void testGetReservations_WithCourtFilter_Correct() throws Exception {
+        val courtId = courts.get(0).getId();
+
+        mockMvc.perform(get(RESERVATIONS + "?courtId=" + courtId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(2));
+    }
+
+    @Test
+    public void testGetReservations_WithUserFilter_Incorrect() throws Exception {
+        val phoneNumber = "123";
+
+        val result = mockMvc.perform(get(RESERVATIONS + "?phoneNumber=" + phoneNumber))
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        val message = result.getResponse().getContentAsString();
+        assertTrue(message.contains(phoneNumber));
+    }
+
+    @Test
+    public void testGetReservations_WithCourtFilter_Incorrect() throws Exception {
+        val courtId = UUID.randomUUID();
+
+        val result = mockMvc.perform(get(RESERVATIONS + "?courtId=" + courtId))
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        val message = result.getResponse().getContentAsString();
+        assertTrue(message.contains(courtId.toString()));
+    }
+
+    @Test
+    public void testGetReservations_WithFutureFilter_Correct() throws Exception {
+        mockMvc.perform(get(RESERVATIONS + "?future=true"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    public void testGetReservations_WithOrderFilter_Incorrect() throws Exception {
+        val order = "random";
+
+        val result = mockMvc.perform(get(RESERVATIONS + "?order=" + order))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        val message = result.getResponse().getContentAsString();
+        assertTrue(message.contains(order));
+    }
+
+    @Test
+    public void testGetReservationById_Correct() throws Exception {
+        val reservationId = reservations.get(0).reservationId();
+
+        mockMvc.perform(get(RESERVATIONS + "/" + reservationId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(reservationId.toString()));
     }
 
     @Test
@@ -175,6 +237,16 @@ public class ReservationControllerTests {
                 .content(reservationUpdate.json()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.price").value(newPrice));
+    }
+
+    @Test
+    public void testDeleteReservation_Correct() throws Exception {
+        val reservationId = reservations.get(2).reservationId();
+
+        mockMvc.perform(delete(RESERVATIONS + "/" + reservationId))
+                .andExpect(status().isNoContent());
+
+        assertThrows(ReservationNotFoundException.class, () -> reservationService.getReservationById(reservationId));
     }
 
 }

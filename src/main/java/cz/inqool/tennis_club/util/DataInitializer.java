@@ -73,8 +73,12 @@ public class DataInitializer implements ApplicationRunner {
                 .createReservation(new ReservationCreate(courts.get(1).getId(), u2.getPhoneName().getPhoneNumber(),
                         u2.getPhoneName().getName(), LocalDateTime.of(2021, 1, 1, 12, 0),
                         LocalDateTime.of(2021, 1, 1, 13, 0), "DOUBLES"));
+        val r3 = reservationService
+                .createReservation(new ReservationCreate(courts.get(2).getId(), u1.getPhoneName().getPhoneNumber(),
+                        u1.getPhoneName().getName(), LocalDateTime.of(2021, 1, 1, 14, 0),
+                        LocalDateTime.of(2021, 1, 1, 15, 0), "SINGLES"));
 
-        return Pair.of(List.of(u1, u2), List.of(r1, r2));
+        return Pair.of(List.of(u1, u2), List.of(r1, r2, r3));
     }
 
 }
