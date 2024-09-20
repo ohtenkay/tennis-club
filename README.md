@@ -5,6 +5,7 @@ A Spring Boot application created for InQool Czechia.
 The project was built and tested using the following tools
  - **Gradle 8**
  - **Java 21**
+ - **liquibase** version 4.29.*
 
 ## Folder Structure
 tennis-club/   
