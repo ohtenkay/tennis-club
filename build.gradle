@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.3.3'
+	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.1.6'
         id 'jacoco'
 }
@@ -44,7 +44,7 @@ dependencies {
         // JPA Metamodel Generator
 	annotationProcessor 'org.hibernate.orm:hibernate-jpamodelgen:6.3.0.Final'
 
-        // SF4J
+        // SLF4J
         implementation 'org.slf4j:slf4j-api'
 
         // Lombok
