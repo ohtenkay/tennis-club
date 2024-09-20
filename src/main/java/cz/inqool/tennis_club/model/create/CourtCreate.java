@@ -6,4 +6,13 @@ public record CourtCreate(
         UUID surfaceTypeId,
         String name,
         String description) {
+
+    public String json() {
+        return "{"
+                + "\"surfaceTypeId\":\"" + surfaceTypeId + "\","
+                + "\"name\":\"" + name + "\","
+                + "\"description\":\"" + description + "\""
+                + "}";
+    }
+
 }

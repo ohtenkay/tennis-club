@@ -16,7 +16,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -29,13 +28,10 @@ import cz.inqool.tennis_club.model.update.ReservationUpdate;
 import cz.inqool.tennis_club.service.ReservationService;
 import cz.inqool.tennis_club.util.DataInitializer;
 import lombok.val;
-import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ComponentScan(basePackages = "cz.inqool.tennis_club")
-@Slf4j
 public class ReservationControllerTests {
 
     @Autowired
