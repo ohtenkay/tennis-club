@@ -34,6 +34,9 @@ tennis-club/
 ├── README.md   
 └── .gitignore   
 
+Please note that for the Class diagram, I decided to leave out the exception, config and util packages to make the diagram more readable.
+If required, you can uncomment the commented statements in class.puml to view every class.
+
 ## How to run
 1. **Clone the repository:**
 
