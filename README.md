@@ -12,25 +12,25 @@ tennis-club/
 │       ├── main/   
 │       │ ├── java/   
 │       │ │     └── cz/inqool/tennis_club/   
-│       │ │             ├── controller/ # REST controllers for API endpoints   
-│       │ │             ├── service/ # Business logic and service layer   
-│       │ │             ├── repository/ # Database repositories (Hibernate)   
-│       │ │             ├── exception/ # Custom exceptions   
-│       │ │             ├── model/ # Entity classes and domain models   
-│       │ │             ├── util/ # Utility classes   
-│       │ │             └── config/ # Configuration classes (JPA)   
+│       │ │             ├── controller/             # REST controllers for API endpoints   
+│       │ │             ├── service/                # Business logic and service layer   
+│       │ │             ├── repository/             # Database repositories (Hibernate)   
+│       │ │             ├── exception/              # Custom exceptions   
+│       │ │             ├── model/                  # Entity classes and domain models   
+│       │ │             ├── util/                   # Utility classes   
+│       │ │             └── config/                 # Configuration classes (JPA)   
 │       │ └── resources/   
-│       │       ├── META-INF # Persistence XML file for JPA and Hibernate   
-│       │       ├── application.properties # Main application configuration   
-│       │       └── db/changelog # SQL changelog for Liquibase   
+│       │       ├── META-INF                        # Persistence XML file for JPA and Hibernate   
+│       │       ├── application.properties          # Main application configuration   
+│       │       └── db/changelog                    # SQL changelog for Liquibase   
 │       └── test/   
 │           ├── java/   
-│           │      └── cz/inqool/tennis_club/ # Unit and integration tests   
+│           │      └── cz/inqool/tennis_club/               # Unit and integration tests   
 │           └── resources/   
-│                   └── application-test.properties # Test-specific properties   
-├── docs/ # Diagrams and their source code   
-├── gradle/ # Gradle wrapper JAR   
-├── build.gradle # And other gradle files   
+│                   └── application-test.properties         # Test-specific properties   
+├── docs/                                           # Diagrams and their source code   
+├── gradle/                                         # Gradle wrapper JAR   
+├── build.gradle                                    # And other gradle files   
 ├── README.md   
 └── .gitignore   
 
