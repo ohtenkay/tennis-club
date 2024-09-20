@@ -28,9 +28,10 @@ public class CourtAdvice {
         return "Error when working with court: \n\t" + ex.getMessage();
     }
 
+    // Enables to see validation errors in the response
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String ExceptionHandler(Exception ex) throws Exception {
+    String ConstrainViolationExceptionHandler(Exception ex) throws Exception {
         val rootCause = getRootCause(ex);
         if (rootCause instanceof ConstraintViolationException) {
             return "Error when working with court: \n\t" + rootCause.getMessage();

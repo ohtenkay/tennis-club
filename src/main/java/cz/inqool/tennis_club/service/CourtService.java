@@ -60,7 +60,7 @@ public class CourtService {
      */
     @Transactional
     public Court createCourt(CourtCreate courtCreate) {
-        val surfaceType = surfaceTypeService.getSurfaceType(courtCreate.surfaceTypeId());
+        val surfaceType = surfaceTypeService.getSurfaceTypeById(courtCreate.surfaceTypeId());
         val court = new Court(surfaceType, courtCreate.name());
         court.setDescription(courtCreate.description());
 
@@ -78,7 +78,7 @@ public class CourtService {
      */
     @Transactional
     public Court updateCourt(CourtUpdate courtUpdate) {
-        val surfaceType = surfaceTypeService.getSurfaceType(courtUpdate.surfaceTypeId());
+        val surfaceType = surfaceTypeService.getSurfaceTypeById(courtUpdate.surfaceTypeId());
         val court = getCourtById(courtUpdate.id());
         court.setSurfaceType(surfaceType);
         court.setName(courtUpdate.name());

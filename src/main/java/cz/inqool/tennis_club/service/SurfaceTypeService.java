@@ -26,7 +26,7 @@ public class SurfaceTypeService {
      * @return surface type
      * @throws SurfaceTypeNotFoundException if surface type does not exist
      */
-    public SurfaceType getSurfaceType(UUID id) {
+    public SurfaceType getSurfaceTypeById(UUID id) {
         return surfaceTypeRepository.findById(id)
                 .orElseThrow(() -> new SurfaceTypeNotFoundException(id));
     }
@@ -54,7 +54,7 @@ public class SurfaceTypeService {
      */
     @Transactional
     public SurfaceType updateSurfaceType(SurfaceTypeUpdate surfaceTypeUpdate) {
-        val surfaceType = getSurfaceType(surfaceTypeUpdate.id());
+        val surfaceType = getSurfaceTypeById(surfaceTypeUpdate.id());
         surfaceType.setName(surfaceTypeUpdate.name());
         surfaceType.setPricePerMinute(surfaceTypeUpdate.pricePerMinute());
 
@@ -70,7 +70,7 @@ public class SurfaceTypeService {
      */
     @Transactional
     public void deleteSurfaceType(UUID id) {
-        val surfaceType = getSurfaceType(id);
+        val surfaceType = getSurfaceTypeById(id);
 
         surfaceTypeRepository.delete(surfaceType);
     }
