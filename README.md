@@ -58,8 +58,8 @@ tennis-club/
 3. **View the DB live**
 
     Go to http://localhost:8080/h2-console/ to view the live database.
-    username: sa
-    password: password
+    - username: sa
+    - password: password
 
 4. **Running tests**
 
@@ -69,6 +69,6 @@ tennis-club/
 
     And view the results at the following:
 
-    Code coverage - file://PATH-TO-PROJECT/tennis-club/build/jacocoHtml/index.html
-    Test results - file://PATH-TO-PROJECT/tennis-club/build/reports/tests/test/index.html
+    - Code coverage - file://PATH-TO-PROJECT/tennis-club/build/jacocoHtml/index.html
+    - Test results - file://PATH-TO-PROJECT/tennis-club/build/reports/tests/test/index.html
 
