@@ -1,0 +1,398 @@
+@startuml
+top to bottom direction
+skinparam linetype ortho
+
+package tennis_club {
+
+    class TennisClubApplication
+
+    ' package config {
+    '     class JpaConfig {
+    '         + entityManagerFactory()
+    '         + transactionManager()
+    '     }
+    ' }
+
+    package controller {
+        class CourtController {
+            - courtService: CourtService
+            + createCourt()
+            + deleteCourt()
+            + getCourtById()
+            + getCourts()
+            + updateCourt()
+        }
+
+        class ReservationController {
+            - reservationService: ReservationService
+            + createReservation()
+            + deleteReservation()
+            + getReservationById()
+            + getReservations()
+            + updateReservation()
+        }
+
+        package advice {
+            class CourtAdvice {
+                + CourtNotFoundHandler()
+                + SurfaceTypeNotFoundHandler()
+                + ConstrainViolationExceptionHandler()
+            }
+
+            class ReservationAdvice {
+                + ReservationNotFoundHandler()
+                + CourtNotFoundHandler()
+                + UserNotFoundHandler()
+                + PhoneNumberUsedBeforeHandler()
+                + InvalidOrderHandler()
+                + InvalidReservationTimeHandler()
+                + CourtAlreadyReservedHandler()
+                + ConstrainViolationExceptionHandler()
+            }
+        }
+    }
+
+    package service {
+        class CourtService {
+            - courtRepository: CourtRepository
+            - surfaceTypeService: SurfaceTypeService
+            + createCourt()
+            + deleteCourt()
+            + getCourtById()
+            + getAllCourts()
+            + updateCourt()
+            + courtExists()
+        }
+
+        class ReservationService {
+            - reservationRepository: ReservationRepository
+            - courtService: CourtService
+            - userService: UserService
+            + createReservation()
+            + deleteReservation()
+            + getReservationById()
+            + getReservations()
+            + updateReservation()
+            - checkReservationTime()
+            - ProcessReservationTime()
+        }
+
+        class SurfaceTypeService {
+            - surfaceTypeRepository: SurfaceTypeRepository
+            + createSurfaceType()
+            + deleteSurfaceType()
+            + getSurfaceTypeById()
+            + updateSurfaceType()
+        }
+
+        class UserService {
+            - userRepository: UserRepository
+            + userExists()
+            + createUser()
+            + deleteUser()
+            + getUserById()
+            + getUserByPhoneNumber()
+            + getOrCreateUser()
+            + updateUser()
+        }
+    }
+
+    ' package exception {
+    '     class CourtAlreadyReservedException
+    '     class CourtNotFoundException
+    '     class InvalidOrderException
+    '     class InvalidReservationTimeException
+    '     class PhoneNumberUsedBeforeException
+    '     class ReservationNotFoundException
+    '     class SurfaceTypeNotFoundException
+    '     class UserNotFoundException
+    ' }
+
+    package model {
+        abstract class AuditableEntity {
+            - createdAt: LocalDateTime
+            - updatedAt: LocalDateTime
+            - deletedAt: LocalDateTime
+        }
+
+        class Court extends AuditableEntity {
+            - id: UUID
+            - name: String
+            - description: String
+            - surfaceType: SurfaceType
+        }
+
+        class PhoneName extends AuditableEntity {
+            - phoneNumber: String
+            - name: String
+        }
+
+        class Reservation extends AuditableEntity {
+            - id: UUID
+            - court: Court
+            - user: User
+            - startTime: LocalDateTime
+            - endTime: LocalDateTime
+            - gameType: String
+        }
+
+        class SurfaceType extends AuditableEntity {
+            - id: UUID
+            - name: String
+            - pricePerMinute: BigDecimal
+        }
+
+        class User extends AuditableEntity {
+            - id: UUID
+            - phoneName: PhoneName
+        }
+
+        package create {
+            class CourtCreate <<record>> {
+                - name: String
+                - description: String
+                - surfaceTypeId: UUID
+                + json()
+            }
+
+            class ReservationCreate <<record>> {
+                - courtId: UUID
+                - phoneNumber: String
+                - name: String
+                - startTime: LocalDateTime
+                - endTime: LocalDateTime
+                - gameType: String
+                + json()
+            }
+
+            class SurfaceTypeCreate <<record>> {
+                - name: String
+                - pricePerMinute: BigDecimal
+            }
+
+            class UserCreate <<record>> {
+                - phoneNumber: String
+                - name: String
+            }
+        }
+
+        package update {
+            class CourtUpdate <<record>> {
+                - id: UUID
+                - name: String
+                - description: String
+                - surfaceTypeId: UUID
+                + json()
+            }
+
+            class CourtUpdateBody <<record>> {
+                - name: String
+                - description: String
+                - surfaceTypeId: UUID
+            }
+
+            class ReservationUpdate <<record>> {
+                - id: UUID
+                - courtId: UUID
+                - userId: UUID
+                - startTime: LocalDateTime
+                - endTime: LocalDateTime
+                - gameType: String
+                + json()
+            }
+
+            class ReservationUpdateBody <<record>> {
+                - courtId: UUID
+                - userId: UUID
+                - startTime: LocalDateTime
+                - endTime: LocalDateTime
+                - gameType: String
+            }
+
+            class SurfaceTypeUpdate <<record>> {
+                - id: UUID
+                - name: String
+                - pricePerMinute: BigDecimal
+            }
+
+            class UserUpdate <<record>> {
+                - id: UUID
+                - phoneNumber: String
+                - name: String
+            }
+        }
+
+        package response {
+            class ReservationResponse <<record>> {
+                - price: BigDecimal
+                - reservationId: UUID
+                - courtId: UUID
+                - phoneNumber: String
+                - name: String
+                - startTime: LocalDateTime
+                - endTime: LocalDateTime
+                - gameType: String
+                + calculatePrice()
+            }
+        }
+
+    }
+
+    package repository {
+        abstract class BaseRepository {
+            - entityManager: EntityManager
+            + save()
+            + update()
+            + delete()
+        }
+
+        class CourtRepository extends BaseRepository {
+            + existsById()
+            + findAll()
+        }
+
+        interface IdentifiableRepository {
+            + findById()
+            + findByIdWithDeleted()
+        }
+
+        class ReservationRepository extends BaseRepository {
+            + existsForCourtInInterval()
+            + find()
+        }
+
+        class SurfaceTypeRepository extends BaseRepository {
+        }
+
+        class UserRepository extends BaseRepository {
+            + findByPhoneNumber()
+            + existsByPhoneNumber()
+            + phoneNumberHasBeenUsed()
+        }
+    }
+
+    ' package util {
+    '     class DataInitializer {
+    '         - seedData : boolean
+    '         - surfaceTypeService: SurfaceTypeService
+    '         - courtService: CourtService
+    '         - userService: UserService
+    '         - reservationService: ReservationService
+    '         + run()
+    '         + seedSurfaceTypesAndCourts()
+    '         + seedUsersAndReservations()
+    '     }
+    '
+    '     class DateTimeUtils {
+    '         + getClosesIntervalMark()
+    '     }
+    '
+    '     class ExceptionUtils {
+    '         + getRootCause()
+    '     }
+    '
+    '     class Pair <<record>> {
+    '         - first: T
+    '         - second: U
+    '         + of()
+    '     }
+    '
+    '     class PhoneNumberUtils {
+    '         + normalizePhoneNumber()
+    '     }
+    ' }
+}
+
+' Controller
+ReservationController --> ReservationAdvice : uses
+ReservationController <.. ReservationService
+' ReservationController --> ReservationCreate : produces
+' ReservationController --> ReservationUpdate : produces
+' ReservationController --> ReservationResponse : responds with
+CourtController --> CourtAdvice : uses
+CourtController <.. CourtService
+' CourtController --> CourtCreate : produces
+' CourtController --> CourtUpdate : produces
+
+' Advice
+' ReservationAdvice --> ReservationNotFoundException : handles
+' ReservationAdvice --> CourtNotFoundException : handles
+' ReservationAdvice --> UserNotFoundException : handles
+' ReservationAdvice --> PhoneNumberUsedBeforeException : handles
+' ReservationAdvice --> InvalidOrderException : handles
+' ReservationAdvice --> InvalidReservationTimeException : handles
+' ReservationAdvice --> CourtAlreadyReservedException : handles
+' CourtAdvice --> CourtNotFoundException : handles
+' CourtAdvice --> SurfaceTypeNotFoundException : handles
+
+' Service
+ReservationService <.. ReservationRepository
+ReservationService <.. CourtService
+ReservationService <.. UserService
+ReservationService --> Reservation : manages
+ReservationService --> ReservationCreate : consumes
+ReservationService --> ReservationUpdate : consumes
+ReservationService --> ReservationResponse : produces
+' ReservationService --> ReservationNotFoundException : throws
+' ReservationService --> InvalidOrderException : throws
+' ReservationService --> InvalidReservationTimeException : throws
+' ReservationService --> CourtAlreadyReservedException : throws
+
+CourtService <.. CourtRepository
+CourtService <.. SurfaceTypeService
+CourtService --> Court : manages
+CourtService --> CourtCreate : consumes
+CourtService --> CourtUpdate : consumes
+' CourtService --> CourtNotFoundException : throws
+
+UserService <.. UserRepository
+UserService --> User : manages
+UserService --> UserCreate : consumes
+UserService --> UserUpdate : consumes
+' UserService --> UserNotFoundException : throws
+' UserService --> PhoneNumberUsedBeforeException : throws
+
+SurfaceTypeService <.. SurfaceTypeRepository
+SurfaceTypeService --> SurfaceType : manages
+SurfaceTypeService --> SurfaceTypeCreate : consumes
+SurfaceTypeService --> SurfaceTypeUpdate : consumes
+' SurfaceTypeService --> SurfaceTypeNotFoundException : throws
+
+' Repository
+IdentifiableRepository <|-- CourtRepository
+IdentifiableRepository <|-- ReservationRepository
+IdentifiableRepository <|-- SurfaceTypeRepository
+IdentifiableRepository <|-- UserRepository
+
+' Model
+User *-- PhoneName
+Court o-- SurfaceType
+Reservation o-- Court
+Reservation o-- User
+
+' App
+TennisClubApplication --> controller
+TennisClubApplication --> service
+TennisClubApplication --> model
+TennisClubApplication --> repository
+' TennisClubApplication --> util
+' TennisClubApplication --> config
+' TennisClubApplication --> exception
+
+' Update, Create, Response
+CourtUpdate <.. CourtUpdateBody
+ReservationUpdate <.. ReservationUpdateBody
+
+' Util
+' DataInitializer <.. SurfaceTypeService
+' DataInitializer <.. CourtService
+' DataInitializer <.. UserService
+' DataInitializer <.. ReservationService
+' DataInitializer --> Pair : uses
+' CourtAdvice --> ExceptionUtils : uses
+' ReservationAdvice --> ExceptionUtils : uses
+' UserService --> PhoneNumberUtils : uses
+' ReservationService --> DateTimeUtils : uses
+' ReservationService --> Pair : uses
+
+@enduml
